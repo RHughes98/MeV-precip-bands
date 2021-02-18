@@ -190,9 +190,9 @@ semilogy(rate.t(VA.end),rate.rate5(VA.end),'ms')
 semilogy(rate.t(find(att.roundedSAA)),rate_raw.rate5(find(att.roundedSAA)),'--')
 plot(rate.t,att.Lshell)
 yline(3,'r'); yline(7,'r')
-title("Hump Identification")
+title("VA Belt Identification")
 xlabel("Time [h] "); ylabel("Count Rate (per 100ms)");
-legend("Count Rate","> threshold","Hump Start","Hump End","Dropped SAA")
+legend("Count Rate","> threshold","VA Start","VA End","Dropped SAA")
 
 % rate vs. lat/long
 % figure

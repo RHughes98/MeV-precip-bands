@@ -1,3 +1,7 @@
+% parsing method adapted from:
+% https://www.mathworks.com/matlabcentral/answers/114852-finding-consecutive
+%     -true-values-in-a-vector
+
 clear; close all; clc
 
 crit = [0 1 1 1 0 0 0 1 1 1 1 0]';

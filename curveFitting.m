@@ -18,14 +18,14 @@ for i = 1:n
     rateShort = rate(VA.start(i):VA.end(i));
     
 %     polynomial fit
-    [p,~,mu] = polyfit(tShort,avgShort,8);
-    yFit = polyval(p,tShort,[],mu);
+%     [p,~,mu] = polyfit(tShort,avgShort,8);
+%     yFit = polyval(p,tShort,[],mu);
     
 %     smoothing spline fit
-    fo = fitoptions('Method','SmoothingSpline','SmoothingParam',0.9999999415414687);
+%     fo = fitoptions('Method','SmoothingSpline','SmoothingParam',0.9999999415414687);
 %     previous: 0.99999957
-    spline = fit(tShort,rateShort,'SmoothingSpline',fo);
-    splineFit = feval(spline,tShort);
+%     spline = fit(tShort,rateShort,'SmoothingSpline',fo);
+%     splineFit = feval(spline,tShort);
     
 %     Gaussian fit
 %     gaussEqn = 'a1*exp(-((x-b1)/c1)^2)+a2*exp(-((x-b2)/c2)^2)';
@@ -33,11 +33,18 @@ for i = 1:n
     gaussian = fit(tShort,rateShort,'gauss2');
     gaussFit = feval(gaussian,tShort);
     
+%     Correlation coefficient
+    movCC = zeros(length(tShort),1);
+    for j = 21:length(tShort)-19
+        CC = corrcoef(rateShort(j-20:j+19),gaussFit(j-20:j+19));
+        movCC(j) = CC(2);
+    end
+    
 %     Precipitation band finding
-    crit1 = VA.avg(VA.start(i):VA.end(i)) > 1.2 * gaussFit;
-    crit2 = ~isnan(VA.avg(VA.start(i):VA.end(i))); %placeholder criteria
-    [bandStart,bandEnd,~] = beltBands(crit1,crit2,rate(VA.start(i):VA.end(i)),...
-        5,[]); 
+    crit1 = avgShort > gaussFit + 10;
+    crit2 = movCC < .9;
+%     crit2 = ~isnan(VA.avg(VA.start(i):VA.end(i))); %placeholder criteria
+    [bandStart,bandEnd] = beltBands(crit1,crit2,rateShort,5,[]); 
     
 %     plot
     figure
