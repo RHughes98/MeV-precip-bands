@@ -35,17 +35,17 @@ for i = 1:n
     
 %     Correlation coefficient
     movCC = zeros(length(tShort),1);
-    for j = 51:length(tShort)-49
-        CC = corrcoef(avgShort(j-50:j+49),gaussFit(j-50:j+49));
+    for j = 21:length(tShort)-19
+        CC = corrcoef(rateShort(j-20:j+19),gaussFit(j-20:j+19));
         movCC(j) = CC(2);
     end
     
 %     Precipitation band finding
     crit1 = avgShort > gaussFit + 50;
-    crit2 = movCC < .955;
-    critMBeqn = (avgShort-gaussFit)./sqrt(1+gaussFit) > 5;
+%     crit2 = movCC < .9;
+    critMBeqn = (rateShort-gaussFit)./sqrt(1+gaussFit) > 5;
     
-%     crit2 = ~isnan(avgShort); %placeholder criteria
+    crit2 = ~isnan(avgShort); %placeholder criteria
     
     [bandStart,bandEnd] = beltBands(critMBeqn,crit2,rateShort,5,[]); 
     
