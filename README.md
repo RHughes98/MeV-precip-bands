@@ -2,7 +2,9 @@
 Objective: Identify and predict MeV electron precipitation bands in the Earth's magnetosphere
 
 ## A quick tour
-The functionality of this repository is concentrated in `dataProcessingScript.m`, with several helper functions to complement.
+
+### MATLAB
+The MATLAB functionality of this repository is concentrated in `dataProcessingScript.m`, with several helper functions to complement.
 
 #### `dataProcessingScript.m`
 This is the central script of the program. It reads in, parses, and processes SAMPEX data before finding Van Allen belts, microbursts, and precipitation bands. All active helper functions are invoked from this script.
@@ -30,5 +32,6 @@ Inactive - used to test reliability of an updated precipitation band identificat
 
 #### `combine_daily_data.m`
 Inactive - used in pre-processing to combine state and attitude data into a more agreeable format for analysis.
-## Data structs
+
+#### Data structs
 There are 3 major data struct variables in `dataProcessingScript.m` geared to its primary purposes. These are `VA` for Van Allen belt identification, `MB` for microbursts, and `PB` for precipitation bands.
