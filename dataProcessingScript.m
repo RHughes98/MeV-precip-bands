@@ -133,22 +133,11 @@ localMin_Bmag = att.Bmag < .4 & localMin_Bmag; % eliminate unwanted minima
 localMin_BmagIndices = find(localMin_Bmag);
 localMin_BmagIndices = [1; localMin_BmagIndices; length(att.Bmag)]; % include endpoints
 
-% plot between local minima (use in debug mode)
-% for i = 2:length(localMin_BmagIndices)
-%     figure
-%     semilogy(rate.t(localMin_BmagIndices(i-1):localMin_BmagIndices(i)),...
-%         rate.rate5(localMin_BmagIndices(i-1):localMin_BmagIndices(i)))
-%     hold on
-%     semilogy(rate.t(localMin_BmagIndices(i-1):localMin_BmagIndices(i)),...
-%         att.Bmag(localMin_BmagIndices(i-1):localMin_BmagIndices(i))*50)
-%     close
-% end
-
 % rolling avg. for noise-reduced fitting
-VA.avg = movmean(rate.rate5,10,'Endpoints','fill');
+VA.avg1s = movmean(rate.rate5,10,'Endpoints','fill');
 
 % identify 'humps' in count rate 
-VA.threshold = VA.avg > 12;
+VA.threshold = VA.avg1s > 12;
 
 % set minimum time length for VA belts to eliminate errors to noise
 VA.indices = find(VA.threshold);
@@ -161,29 +150,15 @@ VA.endIndices = VA.gap(find(VA.gapDiff >= VA.window)+1);
 VA.start = VA.indices(VA.startIndices);
 VA.end = VA.indices(VA.endIndices);
 
-% L-shell criteria
-% for i = 1:length(VA.start)
-%     if att.Lshell(VA.start(i)) > 8 || att.Lshell(VA.start(i)) < 3 ...
-%             || att.Lshell(VA.end(i)) > 8 || att.Lshell(VA.end(i)) < 3
-%         fprintf("VA belt starting at %.2f h does not meet L-shell criteria\n",rate.t(VA.start(i)));
-%         VA.start(i) = NaN;
-%         VA.end(i) = NaN;
-%     end
-% end
-
-% eliminate VA belts that don't meet L-shell criteria
-% VA.start(isnan(VA.start)) = [];
-% VA.end(isnan(VA.end)) = [];
+% rolling average for band identification
+VA.avg = movmean(rate.rate5,10,'Endpoints','fill');
 
 % curve fitting along VA belts     
-humpCheckTally = curveFitting(rate.t,rate.rate5,VA);
+VAbeltTally = curveFitting(rate.t,rate.rate5,VA);
 
 figure
 semilogy(rate.t,rate.rate5)
 hold on
-% semilogy(rate.t,att.Lshell)
-% semilogy(rate.t,att.Bmag*50)
-% semilogy(rate.t(localMin_Bmag),att.Bmag(localMin_Bmag)*50,'r*')
 semilogy(rate.t.*VA.threshold,rate.rate5.*VA.threshold,'k')
 semilogy(rate.t(VA.start),rate.rate5(VA.start),'gd')
 semilogy(rate.t(VA.end),rate.rate5(VA.end),'ms')
@@ -194,18 +169,6 @@ title("VA Belt Identification")
 xlabel("Time [h] "); ylabel("Count Rate (per 100ms)");
 legend("Count Rate","> threshold","VA Start","VA End","Dropped SAA")
 
-% rate vs. lat/long
-% figure
-% scatter(att.long,att.lat,5,rate.rate5log)
-% cBar = colorbar; caxis([min(rate.rate5log) max(rate.rate5log)])
-% title("Rate vs. Position")
-% xlabel("Longitude"); ylabel("Latitude")
-% cBar.Label.String = "Counts (per 100ms) Log-Scaled";
-
-% scatter(rate.t,rate.rate5,10,att.Bmag,'filled')
-% cBar = colorbar; caxis([min(att.Bmag) max(att.Bmag)])
-% cBar.Label.String = "Magnetic Field Magnitude [gauss]";
-% set(gca,'YScale','log')
 
 %% Microbursts
 
