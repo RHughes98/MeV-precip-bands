@@ -34,4 +34,6 @@ Inactive - used to test reliability of an updated precipitation band identificat
 Inactive - used in pre-processing to combine state and attitude data into a more agreeable format for analysis.
 
 #### Data structs
-There are 3 major data struct variables in `dataProcessingScript.m` geared to its primary purposes. These are `VA` for Van Allen belt identification, `MB` for microbursts, and `PB` for precipitation bands.
+There are 4 major data struct variables in `dataProcessingScript.m` geared to its primary purposes. These are `VA` for Van Allen belt identification, `MB` for microbursts, and `PB` for precipitation bands. The final major data struct in `dataProcessingScript.m` is `PB2`, which was originally purposed for experimental methods to find precipitation bands - but Ryan probably needs to rename that variable.
+
+However, there are also some peripheral data structs. These include structs containing rate and attitude data (both pre- and post-processing): `rate_raw`, `rate`, `att_raw`, and `att`. 
