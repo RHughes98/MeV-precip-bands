@@ -24,6 +24,9 @@ The original precipitation band finder function, this helper function is formatt
 #### `beltBands.m`
 A close relative of `PBands.m`. `beltBands.m` is modified to take in smaller data partitions (that may only have one precipitation band) for band identification. It takes in the same parameters as `PBands.m` and returns start/end indices of identified precipitation bands.
 
+#### `percentCheck.m`
+This helper function takes in a vector of logical criteria values and a minimum percentage (from 0 to 1.0 or 0 to 100), and returns whether or not that minimum percentage of criteria values are True.
+
 #### `getPBInput.m`
 This function handles user input, which is taken to check whether a certain precipitation band identification algorithm was effective in its analysis. User input must be Y/y or N/n. `getPBInput.m` is primarily invoked by `quickPlotCheck.m` and `curveFitting.m`.
 
