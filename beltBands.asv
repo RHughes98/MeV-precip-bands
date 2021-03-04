@@ -65,35 +65,9 @@ starts2 = find(endIndices2) - crit2stretches(endIndices2) + 1;
 
 %% Check bands for both criteria
 
-min_overlap_percent = .98;
 
-for i = 1:length(ends1)
-    if ~percentCheck(crit2(starts1(i):ends1(i)),min_overlap_percent)
-        starts1(i) = NaN;
-        ends1(i) = NaN;
-    end
-end
-
-for i = 1:length(ends2)
-    if ~percentCheck(crit1(starts2(i):ends2(i)),min_overlap_percent)
-        starts2(i) = NaN;
-        ends2(i) = NaN;
-    end
-end
 
 %% Combine
 
-bandStart = sort([c1Start; c2Start]);
-bandEnd = sort([c1End; c2End]);
-
-%% Final cleaning
-
-for i = 1:length(bandEnd)
-    if rate(bandStart(i)) < 10 || rate(bandEnd(i)) < 10
-        bandStart(i) = NaN;
-        bandEnd(i) = NaN;
-    end
-end
-
-bandStart(isnan(bandStart)) = [];
-bandEnd(isnan(bandEnd)) = [];
+% bandStart = sort([c1Start; c2Start]);
+% bandEnd = sort([c1End; c2End]);
