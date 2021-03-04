@@ -81,10 +81,15 @@ for i = 1:length(ends2)
     end
 end
 
+starts1(isnan(starts1)) = [];
+ends1(isnan(ends1)) = [];
+
+starts2(isnan(starts2)) = [];
+ends2(isnan(ends2)) = [];
 %% Combine
 
-bandStart = sort([c1Start; c2Start]);
-bandEnd = sort([c1End; c2End]);
+bandStart = sort([starts1; starts2]);
+bandEnd = sort([ends1; ends2]);
 
 %% Final cleaning
 
