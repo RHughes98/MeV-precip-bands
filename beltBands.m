@@ -116,6 +116,3 @@ c2End(isnan(c2End)) = [];
 
 bandStart = sort([c1Start; c2Start]);
 bandEnd = sort([c1End; c2End]);
-
-
-end
