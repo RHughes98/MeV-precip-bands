@@ -1,0 +1,12 @@
+% Author: Ryan Hughes
+% Purpose: Find % of criteria (logical) vector that has a logical value of TRUE
+% Inputs: 
+%     crit_vec - logical 1xn array depicting whether or not criteria is met
+%     min_percent - minimu
+
+function [passed] = percentCheck(crit_vec,min_percent)
+
+num_met = length(find(critvec)); %number of TRUE indices
+percent_met = num_met / length(critvec); 
+
+end
