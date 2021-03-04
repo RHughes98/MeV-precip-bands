@@ -3,6 +3,10 @@ Objective: Identify and predict MeV electron precipitation bands in the Earth's 
 
 ## A quick tour
 
+### SAMPEX Data
+Downloaded and parsed telemetry data collected by the SAMPEX satellite, grouped by '[rate](http://www.srl.caltech.edu/sampex/DataCenter/docs/HILThires.html)' and '[attitude]()' data sets. The former represents SSD4 count rates of protons above ~5MeV and electrons above 1 MeV in 100ms time intervals, while the latter represents chronological, orbital, and environmental data collected by SAMPEX. 
+[Data](http://www.srl.caltech.edu/sampex/DataCenter/data.html) courtesy of CalTech Space Physics Data Center (SPDF).
+
 ### MATLAB
 The MATLAB functionality of this repository is concentrated in `dataProcessingScript.m`, with several helper functions to complement.
 
