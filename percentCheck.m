@@ -7,6 +7,12 @@
 
 function [passed] = percentCheck(crit_vec,min_percent)
 
+if min_percent > 100 || min_percent < 0
+    error('Minimum percentage must be between 0 and 1.0 or 0 and 100')
+elseif min_percent > 1
+    min_percent = min_percent / 100;
+end
+
 num_met = length(find(crit_vec)); %number of TRUE indices
 percent_met = num_met / length(crit_vec); 
 
