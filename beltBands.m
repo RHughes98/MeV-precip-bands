@@ -102,3 +102,4 @@ end
 
 bandStart(isnan(bandStart)) = [];
 bandEnd(isnan(bandEnd)) = [];
+end
