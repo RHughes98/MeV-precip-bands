@@ -30,7 +30,7 @@ for i = 1:n
 %     Gaussian fit
 %     gaussEqn = 'a1*exp(-((x-b1)/c1)^2)+a2*exp(-((x-b2)/c2)^2)';
 %     startPoints = [2000 10 0 2000 10 0.004];
-    gaussian = fit(tShort,rateShort,'gauss2');
+    gaussian = fit(tShort,rateShort,'gauss1');
     gaussFit = feval(gaussian,tShort);
     
 %     Correlation coefficient
@@ -47,7 +47,7 @@ for i = 1:n
     
 %     crit2 = ~isnan(avgShort); %placeholder criteria
     
-    [bandStart,bandEnd] = beltBands(critMBeqn,crit2,rateShort,5,[]); 
+    [bandStart,bandEnd] = mergedCritBands(critMBeqn,crit2,rateShort,5,[]); 
     
 %     plot
     figure
@@ -65,12 +65,13 @@ for i = 1:n
     plot(t(VA.start(i)-plotOffset:VA.end(i)+plotOffset),...
         VA.avg(VA.start(i)-plotOffset:VA.end(i)+plotOffset),'--','LineWidth',1.25)
 %     plot(tShort,(rateShort-gaussFit)./sqrt(1+gaussFit)*10)
-    plot(tShort,critMBeqn * 100)
-    plot(tShort,crit2 * 120)
+%     plot(tShort,critMBeqn * 100)
+%     plot(tShort,crit2 * 120)
+    plot(tShort, (critMBeqn & crit2)*100)
 
     title("Curve-Fit PB Finding")
     xlabel("Time [h]"); ylabel("Count Rate (per 100 ms)");
-    legend("Count Rate","Curve Fit","Avg","MB criteria","CC criteria")
+    legend("Count Rate","Curve Fit","Avg","Both criteria")
     
     if ~isempty(bandStart) % if precip bands identified
         
@@ -78,7 +79,7 @@ for i = 1:n
 %             plot bands
             plot(tShort(bandStart(j)),rateShort(bandStart(j)),'gd','MarkerSize',7);
             plot(tShort(bandEnd(j)),rateShort(bandEnd(j)),'ms','MarkerSize',7);
-            legend("Count Rate","Curve Fit","Avg","MB criteria","CC criteria","Band Start","Band End")
+            legend("Count Rate","Curve Fit","Avg","Both criteria","Band Start","Band End")
 
 % %             collect user evaluation
 %             response = getPBinput();
