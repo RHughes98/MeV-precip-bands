@@ -93,6 +93,14 @@ for i = 1:n
         end
     end
 
+%     check endpoint behavior of criteria
+%     if ismember(0,critMBeqn(1:10)) || ismember(0,crit2(1:10))
+%         fprintf('0 found on leading edge');
+%     end
+%     if ismember(0,critMBeqn(end-9:end)) || ismember(0,crit2(end-9:end))
+%         fprintf('0 found on trailing edge');
+%     end
+    
     close
 end
     
