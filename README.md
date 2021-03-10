@@ -28,6 +28,9 @@ The original precipitation band finder function, this helper function is formatt
 #### `beltBands.m`
 A close relative of `PBands.m`. `beltBands.m` is modified to take in smaller data partitions (that may only have one precipitation band) for band identification. It takes in the same parameters as `PBands.m` and returns start/end indices of identified precipitation bands.
 
+#### `mergedCritBands.m`
+This helper function is yet another band-identification function, utilizing a logical `AND` operator to 'merge' criteria into one comprehensive logical array (1 for both criteria met, 0 for none/not all criteria met). This approach was taken to avoid relying on the 'starts' and 'ends' of potential bands for identification.
+
 #### `percentCheck.m`
 This helper function takes in a vector of logical criteria values and a minimum percentage (from 0 to 1.0 or 0 to 100), and returns whether or not that minimum percentage of criteria values are True.
 
