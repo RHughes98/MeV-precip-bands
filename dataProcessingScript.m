@@ -194,52 +194,52 @@ MB.B3short = MB.B3(ceil(MB.window/2):end-floor(MB.window/2));
 
 MB.burstMag = MB.bursts-MB.B3short(MB.burstIndex); %burst magnitude
 
-%% Precipitation bands
-
+%% Precipitation bands - original approach
+%{
 % PB.window = 5;
 % PB.rateShort = MB.rateShort; %N100
 
-PB.halfBin = 100; %10 s, half of baseline percentile bin size
-PB.fluxGroups = zeros(2*PB.halfBin,flux5len); PB.rateGroups = PB.fluxGroups;
-for i = PB.halfBin+1:flux5len-PB.halfBin+1
-    PB.fluxGroups(:,i) = flux5(i-PB.halfBin:i+PB.halfBin-1);
-    PB.rateGroups(:,i) = rate.rate5(i-PB.halfBin:i+PB.halfBin-1);
+PB1.halfBin = 100; %10 s, half of baseline percentile bin size
+PB1.fluxGroups = zeros(2*PB1.halfBin,flux5len); PB1.rateGroups = PB1.fluxGroups;
+for i = PB1.halfBin+1:flux5len-PB1.halfBin+1
+    PB1.fluxGroups(:,i) = flux5(i-PB1.halfBin:i+PB1.halfBin-1);
+    PB1.rateGroups(:,i) = rate.rate5(i-PB1.halfBin:i+PB1.halfBin-1);
 %     PB.timeGroups(:,i) = rate.t(i-PB.halfBin:i+PB.halfBin-1);
 end
 
-PB.B10 = prctile(PB.fluxGroups,10,1)'; %10th percentile in 20s bins
+PB1.B10 = prctile(PB1.fluxGroups,10,1)'; %10th percentile in 20s bins
 % PB.B10short = PB.B10(ceil(PB.window
 
 % N100 > 4*B20 for >= 5s
-PB.crit1 = rate.rate5 > 4 * PB.B10;
+PB1.crit1 = rate.rate5 > 4 * PB1.B10;
 % PB.crit1 = rate.rate5 > 1.2*PB.B10;
 % PB.A5 = movmean(rate.rate5,50,'Endpoints','discard');
 % PB.crit1 = rate.rate5(25:end-25) >  PB.A5;
 
 % linear corrcoef b/w N100 & B20 < .955
 
-PB.movCC = zeros(flux5len,1);
+PB1.movCC = zeros(flux5len,1);
 for i = 51:flux5len-49
-    CC = corrcoef(rate.rate5(i-50:i+49),PB.B10(i-50:i+49));
-    PB.movCC(i) = CC(2);
+    CC = corrcoef(rate.rate5(i-50:i+49),PB1.B10(i-50:i+49));
+    PB1.movCC(i) = CC(2);
 end
 
 % loop unrolling:
 % want i-50 to i+49 and i+50 to i+99
 % for i:51:flux5len-99 <-- would I need to skip any indices? I think not
 
-PB.crit2 = PB.movCC < .955;
-PB.crit2Indices = find(PB.crit2); %indices where crit2 is met
+PB1.crit2 = PB1.movCC < .955;
+PB1.crit2Indices = find(PB1.crit2); %indices where crit2 is met
 
 % abstracted PB function
-[PB.bandStart, PB.bandEnd, PB.crit1Indices] = PBands(PB.crit1,PB.crit2,...
+[PB1.bandStart, PB1.bandEnd, PB1.crit1Indices] = PBands(PB1.crit1,PB1.crit2,...
     rate.rate5,5,[]);
 
 % avg for plotting
-PB.avg = movmean(rate.rate5,25,'Endpoints','fill');
-
-%% Alternative PB
-
+PB1.avg = movmean(rate.rate5,25,'Endpoints','fill');
+%}
+%% Precipitation bands - experimental approaches
+%{
 % applying microburst eqn. to PB
 PB2.window = 200; %20 s, running avg. time window
 PB2.rateShort = rate.rate5(ceil(PB2.window/2):end-floor(PB2.window/2)); %N100
@@ -255,9 +255,9 @@ PB2.eqnGap = find(PB2.eqnDiff ~= 1); %indices right before 'jumps'
 PB2.eqnGapDiff = diff(PB2.eqnGap); %# of indices between jumps
 
 % baselines with varied percentiles (all 20s bins)
-PB2.B25 = prctile(PB.fluxGroups,25,1)';
-PB2.B50 = prctile(PB.fluxGroups,50,1)'; 
-PB2.B75 = prctile(PB.fluxGroups,75,1)';
+PB2.B25 = prctile(PB1.fluxGroups,25,1)';
+PB2.B50 = prctile(PB1.fluxGroups,50,1)';  
+PB2.B75 = prctile(PB1.fluxGroups,75,1)';
 
 PB2.Bshort = PB2.B50(ceil(PB2.window/2):end-floor(PB2.window/2));
 
@@ -296,6 +296,38 @@ PB2.stdCrit1 = PB2.avgShort > PB2.avg + .5*PB2.std3;
 [PB2.midStart, PB2.midEnd, ~] = PBands(PB2.avgCrit1,PB2.avgCrit2,PB2.rateShort,3,5);
 % [PB2.lowStart, PB2.lowEnd, ~] = PBands(PB2.stdCrit1,PB2.avgCrit2,PB2.rateShort,1.5,3);
 % [PB2.midStart, PB2.midEnd, ~] = PBands(PB2.stdCrit1,PB2.avgCrit2,PB2.rateShort,3,5);
+%}
+
+%% Precipitation bands - current
+
+% time windows for moving avg.
+PB.avgWindow = 20*10; %20 s, running avg time window
+PB.avgWindowShort = 2*10; %2 s, running avg short window
+
+% moving avg. count rate (standard and short-window)
+PB.avg = movmean(rate.rate5,PB.avgWindow,'Endpoints','fill');
+PB.avgShort = movmean(rate.rate5,PB.avgWindowShort,'Endpoints','fill');
+
+% shifted avg. for plotting
+% PB.shiftedAvg = 
+
+% avg.-based criteria
+PB.critAvg = PB.avgShort > 1.2 * PB.avg;
+
+% correlation coefficient-based criteria
+PB.dataLength = length(PB.avg);
+PB.movCC = zeros(PB.dataLength,1);
+PB.CCwindow = 5*10; %5 s, running CC time window
+for i = (PB.CCwindow+1):PB.dataLength-(PB.CCwindow-1)
+    PB.tmpCC = corrcoef(PB.avgShort(i-PB.CCwindow:i+PB.CCwindow-1),...
+        PB.avg(i-PB.CCwindow:i+PB.CCwindow-1));
+    PB.movCC(i) = PB.tmpCC(2);
+end
+PB.critCC = PB.movCC < .955;
+
+% function calls
+% [PB.bandStart, PB.bandEnd] = PBands(PB.critAvg,PB.critCC,rate.rate5,5,[]);
+[PB.bandStart, PB.bandEnd] = mergedCritBands(PB.critAvg,PB.critCC,rate.rate5,5,[]);
 
 %% Self-check
 
@@ -303,37 +335,42 @@ PB2.stdCrit1 = PB2.avgShort > PB2.avg + .5*PB2.std3;
 toc
 
 % adjusted avg for selfCheckTally function
-PB2.tallyAvg = [zeros(PB2.window/2,1); PB2.avg];
+% PB2.tallyAvg = [zeros(PB2.window/2,1); PB2.avg];
+PB.tallyAvg = [zeros(PB.avgWindow/2,1); PB.avg];
 
 % original criteria
 % [selfCheckTally,PB.mislabels] = quickPlotCheck(PB.bandStart,PB.bandEnd,...
 %     rate.rate5,rate.t,PB.avg,PB.crit1,PB.crit2);
 
 % average-based criteria
-[selfCheckTally,PB.mislabels] = quickPlotCheck(PB2.avgBandStart,PB2.avgBandEnd,...
-    PB2.rateShort,PB2.tShort,PB2.avgShort,PB2.avgCrit1,PB2.avgCrit2);
+% [selfCheckTally,PB1.mislabels] = quickPlotCheck(PB2.avgBandStart,PB2.avgBandEnd,...
+%     PB2.rateShort,PB2.tShort,PB2.avgShort,PB2.avgCrit1,PB2.avgCrit2);
 
 % standard deviation criteria
 % [selfCheckTally,PB.mislabels] = quickPlotCheck(PB2.stdBandStart,PB2.stdBandEnd,...
 %     PB2.rateShort,PB2.tShort,PB2.avgShort,PB2.stdCrit1,PB2.avgCrit2);
 
+% final criteria
+[selfCheckTally,PB.mislabels] = quickPlotCheck(PB.bandStart,PB.bandEnd,...
+    rate.rate5,rate.t,PB.avgShort,PB.critAvg,PB.critCC);
+
 % drop user-identified mislabels
 if (~isempty(PB.mislabels))
-%     PB.bandStart(PB.mislabels) = []; PB.bandEnd(PB.mislabels) = [];
-    PB2.avgBandStart(PB.mislabels) = []; PB2.avgBandEnd(PB.mislabels) = [];
+    PB.bandStart(PB.mislabels) = []; PB.bandEnd(PB.mislabels) = [];
+%     PB2.avgBandStart(PB1.mislabels) = []; PB2.avgBandEnd(PB1.mislabels) = [];
 %     PB2.stdBandStart(PB.mislabels) = []; PB2.stdBandEnd(PB.mislabels) = [];
 end
 
 %% Plots
 
-% original criteria
-% plotFunc(rate.t,rate.rate5,rate.t,rate.rate5,PB.bandStart,...
-%     PB.bandEnd,PB.B10,PB.avg,PB.crit1,PB.crit2,MB,PB2);
+% final criteria
+plotFunc(rate.t,rate.rate5,rate.t,rate.rate5,PB.bandStart,...
+    PB.bandEnd,PB.avg,PB.crit1,PB.crit2,MB,PB2);
 
 % average-based criteria
-plotFunc(rate.t,rate.rate5,PB2.tShort,PB2.rateShort,PB2.avgBandStart,...
-    PB2.avgBandEnd,PB.B10,PB2.avgShort,PB2.avgCrit1,PB2.avgCrit2,MB,PB2,VA.threshold);
+% plotFunc(rate.t,rate.rate5,PB2.tShort,PB2.rateShort,PB2.avgBandStart,...
+%     PB2.avgBandEnd,PB2.avgShort,PB2.avgCrit1,PB2.avgCrit2,MB,PB2,VA.threshold);
 
 % standard deviation criteria
 % plotFunc(rate.t,rate.rate5,PB2.tShort,PB2.rateShort,PB2.stdBandStart,...
-%     PB2.stdBandEnd,PB.B10,PB2.avgShort,PB2.stdCrit1,PB2.avgCrit2,MB,PB2);
+%     PB2.stdBandEnd,PB2.avgShort,PB2.stdCrit1,PB2.avgCrit2,MB,PB2);
