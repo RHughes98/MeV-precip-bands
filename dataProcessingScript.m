@@ -154,7 +154,7 @@ VA.end = VA.indices(VA.endIndices);
 VA.avg = movmean(rate.rate5,10,'Endpoints','fill');
 
 % curve fitting along VA belts     
-VAbeltTally = curveFitting(rate.t,rate.rate5,VA);
+% VAbeltTally = curveFitting(rate.t,rate.rate5,VA);
 
 figure
 semilogy(rate.t,rate.rate5)
@@ -247,8 +247,8 @@ PB2.SAAshort = att.roundedSAA(ceil(PB2.window/2):end-floor(PB2.window/2));
 PB2.tShort = rate.t(ceil(PB2.window/2):end-floor(PB2.window/2)); %shortened for index matching
 PB2.avg = movmean(rate.rate5,PB2.window,'Endpoints','discard'); %running avg. over (window/10) s
 PB2.avg(find(PB2.SAAshort)) = 0;
-PB2.criterion = (PB2.rateShort-PB2.avg)./sqrt(1+PB2.avg); %designated burst criterion
-PB2.eqnIndex = find(PB2.criterion > 10); %indices of identified microbursts
+PB2.MBcrit = (PB2.rateShort-PB2.avg)./sqrt(1+PB2.avg); %designated burst criterion
+PB2.eqnIndex = find(PB2.MBcrit > 10); %indices of identified microbursts
 
 PB2.eqnDiff = diff(PB2.eqnIndex);
 PB2.eqnGap = find(PB2.eqnDiff ~= 1); %indices right before 'jumps'
