@@ -1,5 +1,5 @@
 function [] = plotFunc(t,rate,tShort,rateShort,bandStart,bandEnd,...
-    B20,avgShort,crit1,crit2,MB,PB2,humps)
+    avgShort,crit1,crit2,MB,PB2,humps)
 
 % rate vs. time
 figure
@@ -19,7 +19,7 @@ crit1rate = avgShort.*crit1 + 1;
 crit2rate = avgShort.*crit2 - 1;
 
 figure
-semilogy(t,B20,'--','LineWidth',1.5) %baselines
+% semilogy(t,B20,'--','LineWidth',1.5) %baselines
 hold on
 % semilogy(PB2.tShort,1.7*PB2.Bshort,'LineWidth',1.5);
 semilogy(tShort,avgShort,'--','LineWidth',1.5) %short-window avg
