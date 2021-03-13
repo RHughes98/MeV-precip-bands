@@ -48,7 +48,7 @@ bandStart = find(endIndices) - mcrit_stretches(endIndices) + 1;
 
 % if band starts/ends below min. count threshold, remove
 for i = 1:length(bandEnd)
-    if rate(bandStart(i)) < 20 || rate(bandEnd(i)) < 20
+    if rate(bandStart(i)) < 10 || rate(bandEnd(i)) < 10
         bandStart(i) = NaN;
         bandEnd(i) = NaN;
     end
