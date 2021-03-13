@@ -307,6 +307,7 @@ PB.avgWindowShort = 2*10; %2 s, running avg short window
 % moving avg. count rate (standard and short-window)
 PB.avg = movmean(rate.rate5,PB.avgWindow,'Endpoints','fill');
 PB.avgShort = movmean(rate.rate5,PB.avgWindowShort,'Endpoints','fill');
+PB.avg(find(att.SAA)) = 0; PB.avgShort(find(att.SAA)) = 0; 
 
 % shifted avg. for plotting
 % PB.shiftedAvg = 
@@ -365,7 +366,7 @@ end
 
 % final criteria
 plotFunc(rate.t,rate.rate5,rate.t,rate.rate5,PB.bandStart,...
-    PB.bandEnd,PB.avg,PB.crit1,PB.crit2,MB,PB2);
+    PB.bandEnd,PB.avg,PB.critAvg,PB.critCC,MB);
 
 % average-based criteria
 % plotFunc(rate.t,rate.rate5,PB2.tShort,PB2.rateShort,PB2.avgBandStart,...
