@@ -55,19 +55,33 @@ Numerous criteria have been tested to automate the identification of precipitati
 1) <img src="https://render.githubusercontent.com/render/math?math=N_{100} > 4 \times B_{20}"> <img src="https://render.githubusercontent.com/render/math?math=\text{ for }"> <img src="https://render.githubusercontent.com/render/math?math=5 \text{s}">
 2) <img src="https://render.githubusercontent.com/render/math?math=CC_{10}(N_{100},B_{20}) < .955">
 
-                                Note: Nomenclature is listed later in this subsection.
+\* _Nomenclature is listed later in this subsection._
 
 <!--     where <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> is the 100-millisecond count rate, <img src="https://render.githubusercontent.com/render/math?math=B_{20}"> is the 10% baseline count rate over a moving 20-second window, and <img src="https://render.githubusercontent.com/render/math?math=CC_{10}(N_{100},B_{20})"> is the 10-second correlation coefficient between the two. -->
   
 #### Criteria 1
 
-Below is a list of criteria types used as the `crit1` parameter, in their general forms:
+Below is a list of criteria types used for the `crit1` parameter, in their general forms:
 
 1) Count to baseline: <img src="https://render.githubusercontent.com/render/math?math=N_{100} > a \times B_{p}">
 2) Average to baseline: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times B_{p}">
-3) Average to longer-window average: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times A_{T}">
+3) Average to long-window average: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times A_{T}">
 4) Average to standard deviation: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times \sigma_{t}">
 5) Curve-fitting: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times N_{\text{Gauss}}">
+
+All of these criteria were required to be true, or mostly true, for a time window of a designated duration - usually 5 seconds.
+
+#### Criteria 2
+
+The criteria used for the `crit2` parameter were mostly based on moving correlation coefficients between some two data arrays:
+
+1) Count to baseline: <img src="https://render.githubusercontent.com/render/math?math=CC_t(N_{100},B_p)">
+2) Average to baseline: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,B_p)">
+3) Average to long-window average: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,A_T)">
+4) Count to average: <img src="https://render.githubusercontent.com/render/math?math=CC_t(N_{100},A_T)">
+5) Average to curve fit: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,N_{\text{Gauss}})">
+
+The correlation coefficient values were restricted to be below a maximum threshold to find where a shorter-term metric, such as a short-window average, diverged from the longer-term metric, such as a long-window average or curve fit. This maximum correlation coefficient value was normally .955, but varied between tests.
 
 #### Current criteria
 
@@ -75,13 +89,13 @@ The criteria currently being used (in between tests) to identify precipitation b
 
 #### Nomenclature
 
-<img src="https://render.githubusercontent.com/render/math?math=N_{100}"> : 100-millisecond count rate
+Term | Definition
+------------ | ------------
+<img src="https://render.githubusercontent.com/render/math?math=N_{100}"> | 100-millisecond count rate
+<img src="https://render.githubusercontent.com/render/math?math=B_{p}"> | p% baseline count rate over a moving 20-second window*
+<img src="https://render.githubusercontent.com/render/math?math=CC_{t}(N_{100},B_{20})"> | t-second correlation coefficient between <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> and <img src="https://render.githubusercontent.com/render/math?math=B_{p}">
 
-<img src="https://render.githubusercontent.com/render/math?math=B_{p}"> : p% baseline count rate over a moving 20-second window*
-
-<img src="https://render.githubusercontent.com/render/math?math=CC_{t}(N_{100},B_{20})"> : t-second correlation coefficient between <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> and <img src="https://render.githubusercontent.com/render/math?math=B_{p}">
 
 
-
-\* The preceding [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) uses the subscript 
-                 to denote the time window of the 10th percentile baseline instead.
+\* _The preceding [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) uses the subscript 
+                 to denote the time window of the 10th percentile baseline instead._
