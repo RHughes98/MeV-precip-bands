@@ -47,3 +47,12 @@ Inactive - used in pre-processing to combine state and attitude data into a more
 There are 4 major data struct variables in `dataProcessingScript.m` geared to its primary purposes. These are `VA` for Van Allen belt identification, `MB` for microbursts, and `PB` for precipitation bands. The final major data struct in `dataProcessingScript.m` is `PB2`, which was originally purposed for experimental methods to find precipitation bands - but Ryan probably needs to rename that variable.
 
 However, there are also some peripheral data structs. These include structs containing rate and attitude data (both pre- and post-processing): `rate_raw`, `rate`, `att_raw`, and `att`. 
+
+### Criteria
+
+Numerous criteria have been tested to automate the identification of precipitation bands. These started with the original criteria as outlined in the [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) preceding this project:
+
+1) <img src="https://render.githubusercontent.com/render/math?math=N_{100} > 4 \times B_{20} \text{ for } 5 \text{s}">
+2) <img src="https://render.githubusercontent.com/render/math?math=CC_{10}(N_{100},B_{20}) < .955">
+
+  where <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> is the 100 ms count rate, <img src="https://render.githubusercontent.com/render/math?math=B_{20}"> is the 10% baseline count rate over a moving 20-second window, and <img src="https://render.githubusercontent.com/render/math?math=CC_{10}(N_{100},B_{20})"> is the 10-second correlation coefficient between the two.
