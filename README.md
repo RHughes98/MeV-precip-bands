@@ -52,7 +52,21 @@ However, there are also some peripheral data structs. These include structs cont
 
 Numerous criteria have been tested to automate the identification of precipitation bands. These started with the original criteria as outlined in the [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) preceding this project:
 
-1) <img src="https://render.githubusercontent.com/render/math?math=N_{100} > 4 \times B_{20} \text{ for } 5 \text{s}">
+1) <img src="https://render.githubusercontent.com/render/math?math=N_{100} > 4 \times B_{20}"> <img src="https://render.githubusercontent.com/render/math?math=\text{ for }"> <img src="https://render.githubusercontent.com/render/math?math=5 \text{s}">
 2) <img src="https://render.githubusercontent.com/render/math?math=CC_{10}(N_{100},B_{20}) < .955">
 
-  where <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> is the 100 ms count rate, <img src="https://render.githubusercontent.com/render/math?math=B_{20}"> is the 10% baseline count rate over a moving 20-second window, and <img src="https://render.githubusercontent.com/render/math?math=CC_{10}(N_{100},B_{20})"> is the 10-second correlation coefficient between the two.
+    where <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> is the 100-millisecond count rate, <img src="https://render.githubusercontent.com/render/math?math=B_{20}"> is the 10% baseline count rate over a moving 20-second window, and <img src="https://render.githubusercontent.com/render/math?math=CC_{10}(N_{100},B_{20})"> is the 10-second correlation coefficient between the two.
+  
+#### Criteria 1
+
+Below is a list of criteria types used as the `crit1` parameter, in their general forms:
+
+1) Count to baseline: <img src="https://render.githubusercontent.com/render/math?math=N_{100} > a \times B_{\%}">
+2) Average to baseline: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times B_{\%}">
+3) Average to longer-window average: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times A_{T}">
+4) Average to standard deviation: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times \sigma_{t}">
+5) Curve-fitting: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times N_{\text{Gauss}}">
+
+#### Current criteria
+
+The criteria currently being used (in between tests) to identify precipitation bands
