@@ -44,9 +44,50 @@ Inactive - used to test reliability of an updated precipitation band identificat
 Inactive - used in pre-processing to combine state and attitude data into a more agreeable format for analysis.
 
 #### Data structs
-There are 4 major data struct variables in `dataProcessingScript.m` geared to its primary purposes. These are `VA` for Van Allen belt identification, `MB` for microbursts, and `PB` for precipitation bands. The final major data struct in `dataProcessingScript.m` is `PB2`, which was originally purposed for experimental methods to find precipitation bands - but Ryan probably needs to rename that variable.
+There are several major data struct variables in `dataProcessingScript.m` geared to its primary purposes. These are listed below:
+Struct | Purpose
+------- | -------
+`rate_raw`,`att_raw` | unprocessed rate and attitude data, respectively
+`rate`,`att` | processed rate and attitude data, respectively
+`VA` | Van Allen Belt identification, plotting, and processing 
+`MB` | microburst identification and plotting
+`PB1` | original criteria for precipitation band identification and plotting
+`PB2` | experimental criteria for precipitation band identification and plotting
+`PB` | currently used criteria for precipitation band identification and plotting
 
-However, there are also some peripheral data structs. These include structs containing rate and attitude data (both pre- and post-processing): `rate_raw`, `rate`, `att_raw`, and `att`. 
+<!--
+`VA` for Van Allen belt identification, 
+`MB` for microbursts, and 
+`PB` for precipitation bands. The final major data struct in `dataProcessingScript.m` is `PB2`, which is purposed for experimental methods to find precipitation bands.
+However, there are also some peripheral data structs. These include structs containing rate and attitude data (both pre- and post-processing): `rate_raw`, `rate`, `att_raw`, and `att`. -->
+
+### Data
+
+#### Rate
+<!--(year, day, seconds, longitude, latitude, altitude, L-shell, various magnetic field (_B_) magnitudes, MLT, invariant latitude, Loss Cones 1 and 2, South Atlantic Anomaly flag, pitch angle, attitude flag)-->
+Name | Description
+------ | ------
+`year` | 
+`day` | 
+`sec` |
+`long` | 
+`lat` | 
+`alt` | 
+`Lshell` | 
+`Bmag` | 
+`LC1` | 
+`LC2` | 
+`eqB` | 
+`N100B` | 
+`SAA` | 
+
+
+#### Attitude
+<!--(time, count rate)-->
+Name | Description
+------ | ------
+`time` | 
+`rate5` | 
 
 ### Criteria
 
@@ -63,11 +104,11 @@ Numerous criteria have been tested to automate the identification of precipitati
 
 Below is a list of criteria types used for the `crit1` parameter, in their general forms:
 
-1) Count to baseline: <img src="https://render.githubusercontent.com/render/math?math=N_{100} > a \times B_{p}">
-2) Average to baseline: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times B_{p}">
-3) Average to long-window average: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times A_{T}">
-4) Average to standard deviation: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times \sigma_{t}">
-5) Curve-fitting: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times N_{\text{Gauss}}">
+* Count to baseline: <img src="https://render.githubusercontent.com/render/math?math=N_{100} > a \times B_{p}">
+* Average to baseline: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times B_{p}">
+* Average to long-window average: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times A_{T}">
+* Average to standard deviation: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times \sigma_{t}">
+* Curve-fitting: <img src="https://render.githubusercontent.com/render/math?math=A_{t} > a \times N_{\text{Gauss}}">
 
 All of these criteria were required to be true, or mostly true, for a time window of a designated duration - usually 5 seconds.
 
@@ -75,27 +116,34 @@ All of these criteria were required to be true, or mostly true, for a time windo
 
 The criteria used for the `crit2` parameter were mostly based on moving correlation coefficients between some two data arrays:
 
-1) Count to baseline: <img src="https://render.githubusercontent.com/render/math?math=CC_t(N_{100},B_p)">
-2) Average to baseline: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,B_p)">
-3) Average to long-window average: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,A_T)">
-4) Count to average: <img src="https://render.githubusercontent.com/render/math?math=CC_t(N_{100},A_T)">
-5) Average to curve fit: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,N_{\text{Gauss}})">
+* Count to baseline: <img src="https://render.githubusercontent.com/render/math?math=CC_t(N_{100},B_p)">
+* Average to baseline: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,B_p)">
+* Average to long-window average: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,A_T)">
+* Count to average: <img src="https://render.githubusercontent.com/render/math?math=CC_t(N_{100},A_T)">
+* Average to curve fit: <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,N_{\text{Gauss}})">
 
 The correlation coefficient values were restricted to be below a maximum threshold to find where a shorter-term metric, such as a short-window average, diverged from the longer-term metric, such as a long-window average or curve fit. This maximum correlation coefficient value was normally .955, but varied between tests.
 
 #### Current criteria
 
-The criteria currently being used (in between tests) to identify precipitation bands
+The criteria currently being used (in between tests) to identify precipitation bands are:
+
+1) <img src="https://render.githubusercontent.com/render/math?math=A_{2} > 1.2 \times A_{20}">
+2) <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,A_T)">
 
 #### Nomenclature
 
 Term | Definition
 ------------ | ------------
 <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> | 100-millisecond count rate
-<img src="https://render.githubusercontent.com/render/math?math=B_{p}"> | p% baseline count rate over a moving 20-second window*
-<img src="https://render.githubusercontent.com/render/math?math=CC_{t}(N_{100},B_{20})"> | t-second correlation coefficient between <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> and <img src="https://render.githubusercontent.com/render/math?math=B_{p}">
-
+<img src="https://render.githubusercontent.com/render/math?math=B_{p}"> | _p_% baseline count rate over a moving 20-second window*
+<img src="https://render.githubusercontent.com/render/math?math=CC_{t}(N_{100},B_{p})"> | _t_-second correlation coefficient between <img src="https://render.githubusercontent.com/render/math?math=N_{100}"> and <img src="https://render.githubusercontent.com/render/math?math=B_{p}">
+<img src="https://render.githubusercontent.com/render/math?math=A_t"> | short-window moving average with a window of _t_ seconds
+<img src="https://render.githubusercontent.com/render/math?math=A_T"> | long-window moving average with a window of _T_ seconds
+<img src="https://render.githubusercontent.com/render/math?math=\sigma_t"> | moving standard deviation with a window of _t_ seconds
+<img src="https://render.githubusercontent.com/render/math?math=N_{Gauss}"> | Gaussian curve fit of 100-millisecond count rate at Van Allen Belts
+<img src="https://render.githubusercontent.com/render/math?math=a,t"> | scalar factors; these can and do vary between base variables
 
 
 \* _The preceding [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) uses the subscript 
-                 to denote the time window of the 10th percentile baseline instead._
+                 to denote the time window of the 10th percentile baseline rather than the percentile taken for the baseline._
