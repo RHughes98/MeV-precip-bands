@@ -67,27 +67,26 @@ However, there are also some peripheral data structs. These include structs cont
 <!--(year, day, seconds, longitude, latitude, altitude, L-shell, various magnetic field (_B_) magnitudes, MLT, invariant latitude, Loss Cones 1 and 2, South Atlantic Anomaly flag, pitch angle, attitude flag)-->
 Name | Description
 ------ | ------
-`year` | 
-`day` | 
-`sec` |
-`long` | 
-`lat` | 
-`alt` | 
-`Lshell` | 
-`Bmag` | 
-`LC1` | 
-`LC2` | 
-`eqB` | 
-`N100B` | 
-`SAA` | 
+`year` | year of data collection
+`day` | day of year, numeric
+`sec` | seconds of day 
+`long` | longitude in geographic coordinates [deg]
+`lat` | latitude in geographic coordinates [deg]
+`alt` | altitude in geographic coordinates [km]
+`Lshell` | L-shell parameter [Earth radii]
+`Bmag` | Model magnetic field magnitude [Gauss]
+`LC1`, `LC2` | Loss Cones 1 and 2 (particle precipitation half-angle)
+`eqB` | magnetic field magnitude at Earth's equator [Gauss]
+`N100B` | magnetic field magnitude at North 100km [Gauss]
+`SAA` | South Atlantic Anomaly flag
 
 
 #### Attitude
 <!--(time, count rate)-->
 Name | Description
 ------ | ------
-`time` | 
-`rate5` | 
+`time` | time of day [sec]
+`rate5` | 100-millisecond count rate
 
 ### Criteria
 
