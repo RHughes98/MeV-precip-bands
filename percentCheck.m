@@ -1,4 +1,4 @@
-% Author: Ryan Hughes
+ % Author: Ryan Hughes
 % Purpose: Find % of criteria (logical) vector that has a logical value of
 %          True
 % Inputs: 
@@ -7,6 +7,7 @@
 
 function [passed] = percentCheck(crit_vec,min_percent)
 
+% standardize format of min_percent
 if min_percent > 100 || min_percent < 0
     error('Minimum percentage must be between 0 and 1.0 or 0 and 100')
 elseif min_percent > 1
