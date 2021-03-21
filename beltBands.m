@@ -1,5 +1,11 @@
 function [bandStart, bandEnd] = beltBands(crit1,crit2,rate,...
     tMin,tMax)
+
+% Inactive
+
+% if revived:
+%   check for duplicates
+
 %% Find gaps
 
 % check for empty criteria condition
