@@ -15,14 +15,14 @@ xlabel("Time [h]"); ylabel("Count Rate (per 100ms, log-scaled)")
 legend("Count rate","Microburst indicator","PB start","PB end")
 
 % w/ baselines and PB criteria
-crit1rate = avgShort.*crit1 + 1;
-crit2rate = avgShort.*crit2 - 1;
+crit1rate = 100.*crit1;
+crit2rate = 120.*crit2;
 
 figure
 % semilogy(t,B20,'--','LineWidth',1.5) %baselines
-hold on
 % semilogy(PB2.tShort,1.7*PB2.Bshort,'LineWidth',1.5);
 semilogy(tShort,avgShort,'--','LineWidth',1.5) %short-window avg
+hold on
 semilogy(t,rate) %count rate
 semilogy(tShort(bandStart),rateShort(bandStart),'gd','MarkerSize',7)
 semilogy(tShort(bandEnd),rateShort(bandEnd),'ms','MarkerSize',7)
@@ -30,7 +30,7 @@ semilogy(tShort,crit1rate,':','LineWidth',1.2)
 semilogy(tShort,crit2rate,':','LineWidth',1.2)
 title("Baselines and Criteria")
 xlabel("Time [h]"); ylabel("Count rate")
-legend("20% baseline","2.5 second avg","Count rate","PB start",...
+legend("Short window avg","Count rate","PB start",...
     "PB end","Criteria 1","Criteria 2")
 
 % compare PB algorithms
