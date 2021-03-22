@@ -12,7 +12,7 @@ elseif min_percent > 1
 end
 
 ind = window * 10; % convert from s to indices
-sum = movsum(crit,[ind-1 0],'Endpoints','fill'); % only looking backwards
+sum = movsum(crit,[ind-1 0]); % only looking backwards
 % if min_percent of indices in the window are 1, then return index is 1
 out = sum > min_percent * ind; 
 
