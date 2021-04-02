@@ -24,14 +24,14 @@ figure
 semilogy(tShort,avgShort,'--','LineWidth',1.5) %short-window avg
 hold on
 semilogy(t,rate) %count rate
-semilogy(tShort(bandStart),rateShort(bandStart),'gd','MarkerSize',7)
-semilogy(tShort(bandEnd),rateShort(bandEnd),'ms','MarkerSize',7)
 semilogy(tShort,crit1rate,':','LineWidth',1.2)
 semilogy(tShort,crit2rate,':','LineWidth',1.2)
+semilogy(tShort(bandStart),rateShort(bandStart),'gd','MarkerSize',7)
+semilogy(tShort(bandEnd),rateShort(bandEnd),'ms','MarkerSize',7)
 title("Baselines and Criteria")
 xlabel("Time [h]"); ylabel("Count rate")
-legend("Short window avg","Count rate","PB start",...
-    "PB end","Criteria 1","Criteria 2")
+legend("Short window avg","Criteria 1","Criteria 2","Count rate",...
+    "PB start","PB end")
 
 % compare PB algorithms
 % figure
