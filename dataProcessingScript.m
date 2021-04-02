@@ -314,6 +314,7 @@ PB.avg(find(att.SAA)) = 0; PB.avgShort(find(att.SAA)) = 0;
 
 % avg.-based criteria
 PB.critAvg = PB.avgShort > 1.2 * PB.avg;
+% PB.critAvg = movPercent(PB.critAvg,5,98); % if 98% of last 5sec meet crit
 
 % correlation coefficient-based criteria
 PB.dataLength = length(PB.avg);
