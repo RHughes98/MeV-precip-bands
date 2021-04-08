@@ -3,6 +3,10 @@ function [bandStart, bandEnd] = mergedCritBands(crit1,crit2,rate,tMin,tMax)
 
 mergedCrit = crit1 & crit2;
 
+% apply moving percent function
+% mergedCrit = mergedCrit | movPercent(mergedCrit,4,75);
+% OR operator keeps True values outside of high-% 'chains'
+
 %% Find criteria 'stretches'
 
 mcrit_d = double(mergedCrit);
