@@ -156,20 +156,24 @@ VA.avg = movmean(rate.rate5,10,'Endpoints','fill');
 % curve fitting along VA belts     
 % VAbeltTally = curveFitting(rate.t,rate.rate5,VA);
 
-figure
-semilogy(rate.t,rate.rate5)
-hold on
-semilogy(rate.t.*VA.threshold,rate.rate5.*VA.threshold,'k')
-semilogy(rate.t(VA.start),rate.rate5(VA.start),'gd')
-semilogy(rate.t(VA.end),rate.rate5(VA.end),'ms')
-semilogy(rate.t(find(att.roundedSAA)),rate_raw.rate5(find(att.roundedSAA)),'--')
-plot(rate.t,att.Lshell)
-yline(3,'r'); yline(7,'r')
-title("VA Belt Identification")
-xlabel("Time [h] "); ylabel("Count Rate (per 100ms)");
-legend("Count Rate","> threshold","VA Start","VA End","Dropped SAA")
+% figure
+% semilogy(rate.t,rate.rate5)
+% hold on
+% semilogy(rate.t.*VA.threshold,rate.rate5.*VA.threshold,'k')
+% semilogy(rate.t(VA.start),rate.rate5(VA.start),'gd')
+% semilogy(rate.t(VA.end),rate.rate5(VA.end),'ms')
+% semilogy(rate.t(find(att.roundedSAA)),rate_raw.rate5(find(att.roundedSAA)),'--')
+% plot(rate.t,att.Lshell)
+% yline(3,'r'); yline(7,'r')
+% title("VA Belt Identification")
+% xlabel("Time [h] "); ylabel("Count Rate (per 100ms)");
+% legend("Count Rate","> threshold","VA Start","VA End","Dropped SAA")
 
+%% Autoencoders
 
+trainInd = floor(length(rate.rate5)*0.4); %index of end of training data
+autoenc = trainAutoencoder(single(rate.rate5(1:trainInd)));
+Y = predict(autoenc,rate.rate5(1:trainInd));
 %% Microbursts
 
 MB.window = 5; %500 ms, running avg. time window
@@ -313,7 +317,7 @@ PB.avg(find(att.SAA)) = 0; PB.avgShort(find(att.SAA)) = 0;
 % PB.shiftedAvg = 
 
 % avg.-based criteria
-PB.critAvg = PB.avgShort > 1.2 * PB.avg;
+PB.critAvg = PB.avgShort > 1.15 * PB.avg;
 % PB.critAvg = movPercent(PB.critAvg,5,98); % if 98% of last 5sec meet crit
 
 % correlation coefficient-based criteria
