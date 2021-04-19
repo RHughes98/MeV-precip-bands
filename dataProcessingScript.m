@@ -171,9 +171,9 @@ VA.avg = movmean(rate.rate5,10,'Endpoints','fill');
 
 %% Autoencoders
 
-trainInd = floor(length(rate.rate5)*0.4); %index of end of training data
-autoenc = trainAutoencoder(single(rate.rate5(1:trainInd)));
-Y = predict(autoenc,rate.rate5(1:trainInd));
+% trainInd = floor(length(rate.rate5)*0.4); %index of end of training data
+% autoenc = trainAutoencoder(single(rate.rate5(1:trainInd)));
+% Y = predict(autoenc,rate.rate5(1:trainInd));
 %% Microbursts
 
 MB.window = 5; %500 ms, running avg. time window
