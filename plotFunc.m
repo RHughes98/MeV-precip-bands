@@ -18,19 +18,23 @@ legend("Count rate","Microburst indicator","PB start","PB end")
 crit1rate = 100.*crit1;
 crit2rate = 120.*crit2;
 
+mergedCrit = crit1 & crit2;
+mergedCrit = mergedCrit | movPercent(mergedCrit,4,75);
+mergedCritRate = 110.* mergedCrit;
+
 figure
 % semilogy(t,B20,'--','LineWidth',1.5) %baselines
 % semilogy(PB2.tShort,1.7*PB2.Bshort,'LineWidth',1.5);
 semilogy(tShort,avgShort,'--','LineWidth',1.5) %short-window avg
 hold on
 semilogy(t,rate) %count rate
-semilogy(tShort,crit1rate,':','LineWidth',1.2)
-semilogy(tShort,crit2rate,':','LineWidth',1.2)
+semilogy(tShort,mergedCritRate,'LineWidth',1.2)
+% semilogy(tShort,crit2rate,':','LineWidth',1.2)
 semilogy(tShort(bandStart),rateShort(bandStart),'gd','MarkerSize',7)
 semilogy(tShort(bandEnd),rateShort(bandEnd),'ms','MarkerSize',7)
 title("Baselines and Criteria")
 xlabel("Time [h]"); ylabel("Count rate")
-legend("Short window avg","Count rate","Criteria 1","Criteria 2",...
+legend("Short window avg","Count rate","Merged Criteria",...
     "PB start","PB end")
 
 % compare PB algorithms
