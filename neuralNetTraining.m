@@ -94,13 +94,8 @@ rate.rate5 = rate_raw.rate5;
 att.roundedSAA = ceil(att.SAA); %adjust for decimal values from interp
 rate.rate5(find(att.roundedSAA)) = 0; 
 
-% log-scaled rate count
-rate_raw.rate5log = log(rate_raw.rate5);
-rate.rate5log = log(rate.rate5); 
-
-% magnetic flux
-flux5 = (rate.rate5./15)*10; %counts/(str*sec*cm^2)
-flux5len = length(flux5);
+% convert count rate data to single for memory space
+rate.count = cast(rate.rate5,'single');
 
 %% Define training vs. test data
 
@@ -124,7 +119,7 @@ legend("Count Rate", "Training Data", "Test Data")
 
 %% Train & test autoencoder
 
-autoenc = trainAutoencoder(single(rate.rate5(trainingInds(1):trainingInds(2))),1);
+autoenc = trainAutoencoder(rate.count(trainingInds(1):trainingInds(2)));
 prediction = predict(autoenc,rate.rate5(trainingInds(2):len));
-Z = single(rate.rate5(trainingInds(1):trainingInds(2)));
+Z = rate.rate5(trainingInds(1):trainingInds(2));
 decoded = decode(autoenc,Z');
