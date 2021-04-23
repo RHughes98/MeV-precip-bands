@@ -29,3 +29,6 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+# large unused data files
+SAMPEXdata/2005_345to353.txt
