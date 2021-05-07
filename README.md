@@ -64,6 +64,13 @@ However, there are also some peripheral data structs. These include structs cont
 ### Data
 
 #### Rate
+<!--(time, count rate)-->
+Name | Description
+------ | ------
+`time` | time of day [sec]
+`rate` | 100-millisecond count rate
+
+#### Attitude
 <!--(year, day, seconds, longitude, latitude, altitude, L-shell, various magnetic field (_B_) magnitudes, MLT, invariant latitude, Loss Cones 1 and 2, South Atlantic Anomaly flag, pitch angle, attitude flag)-->
 Name | Description
 ------ | ------
@@ -80,13 +87,6 @@ Name | Description
 `N100B` | magnetic field magnitude at North 100km [Gauss]
 `SAA` | South Atlantic Anomaly flag
 
-
-#### Attitude
-<!--(time, count rate)-->
-Name | Description
------- | ------
-`time` | time of day [sec]
-`rate5` | 100-millisecond count rate
 
 ### Criteria
 
@@ -146,3 +146,7 @@ Term | Definition
 
 \* _The preceding [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) uses the subscript 
                  to denote the time window of the 10th percentile baseline rather than the percentile taken for the baseline._
+
+### Machine Learning
+
+Various machine learning techniques were explored to identify and/or predict precipitation bands. The most successful in Ryan's time here was a bidirectional Long Short Term Memory (LSTM) neural network with 
