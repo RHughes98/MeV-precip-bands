@@ -1,0 +1,91 @@
+%% Bidirectional LSTM Neural Network
+%           (Long Short Term Memory)
+
+%% Housekeeping
+clear; close all; clc
+
+%% Read & sort data
+
+trainDays = [347 349];
+trainData = read_days(trainDays);
+
+trainLabelsMat = load('trainLabels.mat');
+trainLabels = trainLabelsMat.labels;
+for i = 1:length(trainLabels)
+    trainLabelDoubles(i) = trainLabels(i);
+    trainLabels{i} = categorical(trainLabels{i}');
+end
+
+testDays = [360 361 362];
+testData = read_days(testDays);
+
+testLabelsMat = load('testLabels.mat');
+testLabels = testLabelsMat.labels;
+
+% testLabelDoubles = zeros(size(testLabels));
+for i = 1:length(testLabels)
+    testLabelDoubles(i) = testLabels(i);
+    testLabels{i} = categorical(testLabels{i}');
+end
+
+%% Learning Parameters
+
+inputSize = size(trainData{1,1},1);
+numHiddenUnits = 100;
+numDays = length(trainDays);
+
+maxEpochs = 10;
+miniBatchSize = 24;
+
+%% Behind-the-scenes stuff
+
+layers = [ ...
+    sequenceInputLayer(inputSize)
+    bilstmLayer(numHiddenUnits)
+    fullyConnectedLayer(2)
+    softmaxLayer
+    classificationLayer];
+
+options = trainingOptions('adam', ...
+    'ExecutionEnvironment','auto', ...
+    'GradientThreshold',1, ...
+    'MaxEpochs',maxEpochs, ...
+    'MiniBatchSize',miniBatchSize, ...
+    'SequenceLength','longest', ...
+    'Shuffle','never', ...
+    'Verbose',0, ...
+    'Plots','training-progress');
+
+%% Train network
+
+net = trainNetwork(trainData',trainLabels,layers,options);
+% net = trainNetwork(a,b,layers,options);
+%% Test network
+
+predict = classify(net, testData, ...
+    'MiniBatchSize',miniBatchSize, ...
+    'SequenceLength','longest');
+
+for i = 1:length(predict)
+    acc(i) = sum(predict{i} == testLabels{i}) ./ numel(testLabels{i});
+end
+
+overall_acc = mean(acc);
+
+%% Plot results
+
+for i = 1:length(testData)
+    rate = testData{1,i}(2,:);
+    band_rate = rate' .* testLabelDoubles{1,i};
+    
+    figure
+    semilogy(testData{1,i}(1,:),rate)
+    hold on
+    semilogy(testData{1,i}(1,:),band_rate,'g','LineWidth',1.5)
+    
+    
+    title(sprintf('Precipitation Bands for Day %i',testDays(i)))
+    xlabel('Time [s]')
+    ylabel('Count Rate (per 100 ms, log-scaled)')
+    legend('Count rate','Precip bands')
+end
