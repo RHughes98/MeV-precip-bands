@@ -1,19 +1,20 @@
 % Housekeeping
 clear; close all; clc
-%{
+
 %% Rate Data
 % days of rate files to read in
 days = [345:349, 351:353];
+
+% define arrays to print to file
+t = [];
+rate1 = []; rate2 = []; rate3 = [];
+rate4 = []; rate5 = []; rate6 = [];
+
 for day = days
 %     read data
     filename = strcat('SAMPEXdata/rateDataByDay/hhrr2005',num2str(day),'.txt');
     rateData = readmatrix(filename,'NumHeaderLines',1);
-    
-%     define arrays to print to file
-    t = [];
-    rate1 = []; rate2 = []; rate3 = [];
-    rate4 = []; rate5 = []; rate6 = [];
-    
+      
 %     sort data
 %     increment time if not first pass through loop
     if t > days(1)
@@ -37,10 +38,10 @@ fprintf(fileID,'Time Rate1 Rate2 Rate3 Rate4 Rate5 Rate6\n');
 % write rate data to file
 writeData = [t,rate1,rate2,rate3,rate4,rate5,rate6]';
 fprintf(fileID,'%.2f, %d, %d, %d, %d, %d, %d\n',writeData);
-%}
+
 
 %% Attitude Data
-
+%{
 % read file and extract time data (all we need)
 attData = readmatrix('SAMPEXdata/2005_345to353_att_raw.txt','NumHeaderLines',74);
 
@@ -62,5 +63,7 @@ writeData_att = writeData_att';
 
 % write att data to file
 fileID_att = fopen('SAMPEXdata/2005_345to353_att.txt','w');
-fprintf(fileID_att,'%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d \n',...
+fprintf(fileID_att,'%d, %d
+, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d \n',...
     writeData_att);
+%}

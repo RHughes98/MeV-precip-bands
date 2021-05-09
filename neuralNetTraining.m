@@ -3,8 +3,6 @@ clear; close all; clc
 
 %% Read & sort data
 % file naming convention: hhrrYearDay.txt
-% rateData = readmatrix('SAMPEXdata/2005_345to353.txt','NumHeaderLines',1);
-% attData = readmatrix('SAMPEXdata/2005_345to353_att.txt');
 
 rateData = readmatrix('SAMPEXdata/rateDataByDay/hhrr2005347.txt','NumHeaderLines',1);
 attData = readmatrix('SAMPEXdata/attDataByDay/hhrr2005347_att.txt','NumHeaderLines',74);
@@ -12,12 +10,7 @@ attData = readmatrix('SAMPEXdata/attDataByDay/hhrr2005347_att.txt','NumHeaderLin
 % [t,rate1,rate2,rate3,rate4,rate5] = deal(rateData{:,:});
 
 rate_raw.t = rateData(:,1); %s, time
-% rate.rate1 = rateData(:,2); %Sum from Time to Time + 20 msec
-% rate.rate2 = rateData(:,3); %Sum from Time + 20 msec to Time + 40 msec
-% rate.rate3 = rateData(:,4); %Sum from Time + 40 msec to Time + 60 msec
-% rate.rate4 = rateData(:,5); %Sum from Time + 60 msec to Time + 80 msec
 rate_raw.rate5 = rateData(:,6); %SSD4 from Time to Time + 100 msec
-% rate.rate6 = rateData(:,7); %Sum from Time + 80 msec to Time + 100 msec
 
 att_raw.year = attData(:,1); %year of data collection
 att_raw.day = attData(:,2); %day of year
@@ -40,20 +33,6 @@ att_raw.att_flag = attData(:,18); %boolean, attitude data quality flag
 
 %% Clean data 
 
-% drop SAA flag
-% SAA_index = find(att_raw.SAA); %<---- indices don't align here!!!!
-% rate_SAA.t = rate.t; %no need to drop SAA indices from timestamps, just counts
-% rate_SSA.rate1 = rate.rate1; rateSSA.rate1(SAA_index) = 0;
-% rate_SSA.rate2 = rate.rate2; rateSSA.rate2(SAA_index) = 0;
-% rate_SSA.rate3 = rate.rate3; rateSSA.rate3(SAA_index) = 0;
-% rate_SSA.rate4 = rate.rate4; rateSSA.rate4(SAA_index) = 0;
-% rate_SSA.rate5 = rate.rate5; rateSSA.rate5(SAA_index) = 0;
-% rate_SSA.rate6 = rate.rate6; rateSSA.rate6(SAA_index) = 0;
-% 
-% drop_check = find(rate.rate1 - rateSSA.rate1 ~= 0);
-
-% attitude flag check
-
 % convert time to hours
 rate_raw.t = rate_raw.t ./ 3600; %h
 rate.t = rate_raw.t;
@@ -70,41 +49,52 @@ end
 
 % cubic interpolation
 % (interp1 also matches time vectors and adjusts data accordingly)
-att.sec = interp1(att_raw.sec,att_raw.sec,rate.t,'pchip');
-att.long = interp1(att_raw.sec,att_raw.long,att.sec,'pchip');
-att.lat = interp1(att_raw.sec,att_raw.lat,att.sec,'pchip');
-att.inv_lat = interp1(att_raw.sec,att_raw.inv_lat,att.sec,'pchip');
-att.alt = interp1(att_raw.sec,att_raw.alt,att.sec,'pchip');
-att.Lshell = interp1(att_raw.sec,att_raw.Lshell,att.sec,'pchip');
-att.Bmag = interp1(att_raw.sec,att_raw.Bmag,att.sec,'pchip');
-% att.MLT = interp1(att_raw.sec,att_raw.MLT,att.sec,'pchip');
-att.LC1 = interp1(att_raw.sec,att_raw.LC1,att.sec,'pchip');
-att.LC2 = interp1(att_raw.sec,att_raw.LC2,att.sec,'pchip');
-att.eqB = interp1(att_raw.sec,att_raw.eqB,att.sec,'pchip');
-att.N100B = interp1(att_raw.sec,att_raw.N100B,att.sec,'pchip');
-att.S100B = interp1(att_raw.sec,att_raw.S100B,att.sec,'pchip');
-att.SAA = interp1(att_raw.sec,att_raw.SAA,att.sec,'pchip');
+att.t = interp1(att_raw.sec,att_raw.sec,rate.t,'pchip');
+att.long = interp1(att_raw.sec,att_raw.long,att.t,'pchip');
+att.lat = interp1(att_raw.sec,att_raw.lat,att.t,'pchip');
+att.inv_lat = interp1(att_raw.sec,att_raw.inv_lat,att.t,'pchip');
+att.alt = interp1(att_raw.sec,att_raw.alt,att.t,'pchip');
+att.Lshell = interp1(att_raw.sec,att_raw.Lshell,att.t,'pchip');
+att.Bmag = interp1(att_raw.sec,att_raw.Bmag,att.t,'pchip');
+% att.MLT = interp1(att_raw.sec,att_raw.MLT,att.t,'pchip');
+att.LC1 = interp1(att_raw.sec,att_raw.LC1,att.t,'pchip');
+att.LC2 = interp1(att_raw.sec,att_raw.LC2,att.t,'pchip');
+att.eqB = interp1(att_raw.sec,att_raw.eqB,att.t,'pchip');
+att.N100B = interp1(att_raw.sec,att_raw.N100B,att.t,'pchip');
+att.S100B = interp1(att_raw.sec,att_raw.S100B,att.t,'pchip');
+att.SAA = interp1(att_raw.sec,att_raw.SAA,att.t,'pchip');
 
 % 're-loop' longitude data using modulus
 att.long = mod(att.long,360);
 att_raw.long = mod(att_raw.long,360); %in the spirit of keeping it as 'raw' data
 
 % drop SAA from rate data
-rate.rate5 = rate_raw.rate5;
+rate.rate = rate_raw.rate5;
 att.roundedSAA = ceil(att.SAA); %adjust for decimal values from interp
-rate.rate5(find(att.roundedSAA)) = 0; 
+rate.rate(find(att.roundedSAA)) = 0; 
 
 % convert count rate data to single for memory space
-rate.count = cast(rate.rate5,'single');
+rate.singleRate = cast(rate.rate,'single');
 
 %% Define training vs. test data
 
-len = length(rate.rate5);
-trainingInds = floor([len*0.2; len*0.6]);
+len = length(rate.rate);
+trainingInds = floor([len*0.5; len*0.9]);
 trainingXs = rate.t(trainingInds);
 
+%% Train & test autoencoder
+
+epochs = 500;
+autoenc = trainAutoencoder(rate.singleRate(trainingInds(1):trainingInds(2)),...
+    'MaxEpochs',epochs,'UseGPU',true);
+prediction = predict(autoenc,rate.rate(trainingInds(2):len));
+Z = rate.singleRate(trainingInds(1):trainingInds(2));
+predict = predict(autoenc,Z');
+
+%% Plots
+
 figure
-semilogy(rate.t, rate.rate5)
+semilogy(rate.t, rate.rate)
 hold on
 maxY = get(gca,'ylim');
 trainFill = fill([trainingXs(1) trainingXs(1) trainingXs(2) trainingXs(2)],...
@@ -116,10 +106,3 @@ set(testFill, 'facealpha',.4)
 title("Training Data Split")
 xlabel("Time [h]"); ylabel("Count Rate (per 100ms, log-scaled)")
 legend("Count Rate", "Training Data", "Test Data")
-
-%% Train & test autoencoder
-
-autoenc = trainAutoencoder(rate.count(trainingInds(1):trainingInds(2)));
-prediction = predict(autoenc,rate.rate5(trainingInds(2):len));
-Z = rate.rate5(trainingInds(1):trainingInds(2));
-decoded = decode(autoenc,Z');

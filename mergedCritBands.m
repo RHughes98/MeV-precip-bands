@@ -4,7 +4,7 @@ function [bandStart, bandEnd] = mergedCritBands(crit1,crit2,rate,tMin,tMax)
 mergedCrit = crit1 & crit2;
 
 % apply moving percent function
-% mergedCrit = mergedCrit | movPercent(mergedCrit,4,75);
+mergedCrit = mergedCrit | movPercent(mergedCrit,4,75);
 % OR operator keeps True values outside of high-% 'chains'
 % MAKE SURE TO change function parameters in plotFunc too!
 
