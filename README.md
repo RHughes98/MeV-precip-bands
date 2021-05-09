@@ -149,4 +149,4 @@ Term | Definition
 
 ### Machine Learning
 
-Various machine learning techniques were explored to identify and/or predict precipitation bands. The most successful in Ryan's time here was a bidirectional Long Short Term Memory (LSTM) neural network with 
+Various machine learning techniques were explored to identify and/or predict precipitation bands. The most successful in Ryan's time here was a bidirectional Long Short Term Memory (LSTM) neural network with 100 hidden units. Variations of this model (by number of epochs) can be found in the `models` directory.
