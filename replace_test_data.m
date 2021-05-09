@@ -1,10 +1,13 @@
+%% Housekeeping
+clear; close all; clc
+
 %% Read & sort data
 
 testDaysNew = [345 348 353 365];
 testDataNew = read_days(testDaysNew);
 
-% retestLabelsMat = load('retestLabels.mat');
-retestLabels = retestLabelsMat.labels;
+retestLabelsMat = load('retestLabels.mat');
+retestLabels = retestLabelsMat.labelmat.labels;
 
 % retestLabelDoubles = zeros(size(retestLabels));
 for i = 1:length(retestLabels)

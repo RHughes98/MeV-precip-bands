@@ -20,7 +20,7 @@ testDays = [360 361 362];
 testData = read_days(testDays);
 
 testLabelsMat = load('testLabels.mat');
-testLabels = testLabelsMat.labels;
+testLabels = testLabelsMat.labelmat.labels;
 
 % testLabelDoubles = zeros(size(testLabels));
 for i = 1:length(testLabels)
