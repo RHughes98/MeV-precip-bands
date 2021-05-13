@@ -8,19 +8,18 @@ Downloaded and parsed telemetry data collected by the SAMPEX satellite, grouped 
 [Data](http://www.srl.caltech.edu/sampex/DataCenter/data.html) courtesy of CalTech Space Physics Data Center (SPDF).
 
 ### MATLAB
-The MATLAB functionality of this repository is concentrated in `dataProcessingScript.m`, with several helper functions to complement.
 
 #### `dataProcessingScript.m`
-This is the central script of the program. It reads in, parses, and processes SAMPEX data before finding Van Allen belts, microbursts, and precipitation bands. All active helper functions are invoked from this script.
+The central script of the program. It reads in, parses, and processes SAMPEX data before finding Van Allen belts, microbursts, and precipitation bands. All active helper functions are invoked from this script.
 
 #### `plotFunc.m`
-This is the plotting helper function. It takes in specific data vectors for plotting, and the input parameters can be varied to plot features found via different methods and criteria. The parameter structure is mostly for convenient swapping between criteria to plot for observation.
+Plotting helper function, takes in specific data vectors for plotting. Input parameters can be varied to plot features found via different methods and criteria. The parameter structure is mostly for convenient swapping between criteria to plot for observation.
 
 #### `quickPlotCheck.m`
 Used for plotting all identified precipitation bands in order for users to individually identify true and false positives.
 
 #### `curveFitting.m`
-This function is used to apply a 2<sup>nd</sup> term Gaussian curve fit to Van Allen belts. They are plotted one-by-one with the curve fit overlaid. This function invokes the `beltBands.m` helper function to find precipitation bands that occurred as the satellite was passing through the Van Allen belts.
+Applies a 2<sup>nd</sup> term Gaussian curve fit to Van Allen belts. They are plotted one-by-one with the curve fit overlaid. This function invokes the `beltBands.m` helper function to find precipitation bands that occurred as the satellite was passing through the Van Allen belts.
 
 #### `PBands.m`
 The original precipitation band finder function, this helper function is formatted to find precipitation bands over full days' data sets. `PBands.m` takes in criteria, count rate data, and a target time window for band duration. It returns the start and end indices of precipitation bands, as well as the indices of data points that met the first criteria (for later plotting and analysis, this output is often omitted in `dataProcessingScript.m`).
@@ -29,13 +28,13 @@ The original precipitation band finder function, this helper function is formatt
 A close relative of `PBands.m`. `beltBands.m` is modified to take in smaller data partitions (that may only have one precipitation band) for band identification. It takes in the same parameters as `PBands.m` and returns start/end indices of identified precipitation bands.
 
 #### `mergedCritBands.m`
-This helper function is yet another band-identification function, utilizing a logical `AND` operator to 'merge' criteria into one comprehensive logical array (1 for both criteria met, 0 for none/not all criteria met). This approach was taken to avoid relying on the 'starts' and 'ends' of potential bands for identification.
+Another band-identification function, this time utilizing a logical `AND` operator to 'merge' criteria into one comprehensive logical array (1 for both criteria met, 0 for none/not all criteria met). This approach was taken to avoid relying on the 'starts' and 'ends' of potential bands for identification.
 
 #### `percentCheck.m`
-This helper function takes in a vector of logical criteria values and a minimum percentage (from 0 to 1.0 or 0 to 100), and returns whether or not that minimum percentage of criteria values are True.
+Takes in a vector of logical criteria values and a minimum percentage (from 0 to 1.0 or 0 to 100), and returns whether or not that minimum percentage of criteria values are True.
 
 #### `getPBInput.m`
-This function handles user input, which is taken to check whether a certain precipitation band identification algorithm was effective in its analysis. User input must be Y/y or N/n. `getPBInput.m` is primarily invoked by `quickPlotCheck.m` and `curveFitting.m`.
+Handles user input, which is taken to check whether a certain precipitation band identification algorithm was effective in its analysis. User input must be Y/y or N/n. `getPBInput.m` is primarily invoked by `quickPlotCheck.m` and `curveFitting.m`.
 
 #### `band_dummy.m`
 Inactive - used to test reliability of an updated precipitation band identification algorithm (using given criteria). 
@@ -61,7 +60,7 @@ Struct | Purpose
 `PB` for precipitation bands. The final major data struct in `dataProcessingScript.m` is `PB2`, which is purposed for experimental methods to find precipitation bands.
 However, there are also some peripheral data structs. These include structs containing rate and attitude data (both pre- and post-processing): `rate_raw`, `rate`, `att_raw`, and `att`. -->
 
-### Data
+## Data
 
 #### Rate
 <!--(time, count rate)-->
@@ -88,7 +87,7 @@ Name | Description
 `SAA` | South Atlantic Anomaly flag
 
 
-### Criteria
+## Criteria
 
 Numerous criteria have been tested to automate the identification of precipitation bands. These started with the original criteria as outlined in the [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) preceding this project:
 
@@ -130,7 +129,7 @@ The criteria currently being used (in between tests) to identify precipitation b
 1) <img src="https://render.githubusercontent.com/render/math?math=A_{2} > 1.2 \times A_{20}">
 2) <img src="https://render.githubusercontent.com/render/math?math=CC_t(A_t,A_T)">
 
-#### Nomenclature
+## Nomenclature
 
 Term | Definition
 ------------ | ------------
@@ -147,6 +146,16 @@ Term | Definition
 \* _The preceding [paper](https://github.com/RHughes98/MeV-precip-bands/blob/main/Blumetal2015_SAMPEXprecipHSSs.pdf) uses the subscript 
                  to denote the time window of the 10th percentile baseline rather than the percentile taken for the baseline._
 
-### Machine Learning
+## Machine Learning
 
-Various machine learning techniques were explored to identify and/or predict precipitation bands. The most successful in Ryan's time here was a bidirectional Long Short Term Memory (LSTM) neural network with 100 hidden units. Variations of this model (by number of epochs) can be found in the `models` directory.
+Various machine learning techniques were explored to identify and/or predict precipitation bands. The most successful in Ryan's time here was a bidirectional Long Short Term Memory (LSTM) neural network with 100 hidden units. Variations of this model (by number of epochs) can be found in the `models` subdirectory.
+
+## Suggested Use
+
+## Future Work
+
+This project is far from complete, and whoever takes it up next has their work more or less cut out for them. Here are some things Ryan didn't get around to during his tenure at LASP:
+* Automate the process of reading SAMPEX data and organizing it into `.mat` files for neural network training and testing
+* Use `.fig` files in `PB-plots` subdirectory to compare various trials between models (plot new model's identified PB's over existing figure)
+* Feature reduction to create a more concise model
+* Run neural network models on a more powerful CPU than Ryan's personal laptop, using significantly more data
