@@ -16,7 +16,7 @@ for i = 1:length(trainLabels)
     trainLabels{i} = categorical(trainLabels{i}');
 end
 
-testDays = [360 361 362];
+testDays = [345 348 353 365];
 testData = read_days(testDays);
 
 testLabelsMat = load('testLabels.mat');
@@ -34,7 +34,7 @@ inputSize = size(trainData{1,1},1);
 numHiddenUnits = 100;
 numDays = length(trainDays);
 
-maxEpochs = 10;
+maxEpochs = 5;
 miniBatchSize = 24;
 
 %% Behind-the-scenes stuff
@@ -66,6 +66,8 @@ predict = classify(net, testData, ...
     'MiniBatchSize',miniBatchSize, ...
     'SequenceLength','longest');
 
+testLabels = flip(testLabels');
+
 for i = 1:length(predict)
     acc(i) = sum(predict{i} == testLabels{i}) ./ numel(testLabels{i});
 end
@@ -74,9 +76,11 @@ overall_acc = mean(acc);
 
 %% Plot results
 
+% testLabelDoubles = flip(testLabelDoubles');
+
 for i = 1:length(testData)
     rate = testData{1,i}(2,:);
-    band_rate = rate' .* testLabelDoubles{1,i};
+    band_rate = rate' .* testLabelDoubles{i,1};
     
     figure
     semilogy(testData{1,i}(1,:),rate)

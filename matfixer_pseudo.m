@@ -7,3 +7,7 @@
 %% matname.varname has a 1x1 cell where a double should be
 
 % matname.varname{1,i} = matname.varname{1,i}{1,1}
+
+%% that one error at accuracy calculation line
+
+% testLabels = flip(testLabels');
