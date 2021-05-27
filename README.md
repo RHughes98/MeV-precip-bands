@@ -36,11 +36,15 @@ Takes in a vector of logical criteria values and a minimum percentage (from 0 to
 #### `getPBInput.m`
 Handles user input, which is taken to check whether a certain precipitation band identification algorithm was effective in its analysis. User input must be Y/y or N/n. `getPBInput.m` is primarily invoked by `quickPlotCheck.m` and `curveFitting.m`.
 
+#### `read_days.m`
+Takes as input an array of numerical days of the year 2005, then sorts feature data for those day into a cell array.   
+
 #### `band_dummy.m`
-Inactive - used to test reliability of an updated precipitation band identification algorithm (using given criteria). 
+**Inactive** - used to test reliability of an updated precipitation band identification algorithm (using given criteria). 
 
 #### `combine_daily_data.m`
-Inactive - used in pre-processing to combine state and attitude data into a more agreeable format for analysis.
+**Inactive** - used in pre-processing to combine state and attitude data into a more agreeable format for analysis.
+
 
 #### Data structs
 There are several major data struct variables in `dataProcessingScript.m` geared to its primary purposes. These are listed below:
