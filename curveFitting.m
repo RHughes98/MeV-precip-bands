@@ -1,4 +1,13 @@
 function [tally] = curveFitting(t,rate,VA)
+% Author: Ryan Hughes
+% Purpose: 
+% Input:
+%       t: time data [sec]
+%       rate: count rate data
+%       VA: struct containing relevant variables for Van Allen belts
+% Output:
+%       tally: total number of bands identified
+
 
 % instantiate tally struct
 tally.correct = 0; tally.mislabel = 0;

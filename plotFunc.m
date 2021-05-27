@@ -1,6 +1,13 @@
 function [] = plotFunc(t,rate,tShort,rateShort,bandStart,bandEnd,...
     avgShort,crit1,crit2,MB)%,PB2,humps)
 
+% Author: Ryan Hughes
+% Purpose: General plotting function for DataProcessingScript.m
+% Input:
+%       
+% Output:
+%       
+
 % rate vs. time
 figure
 semilogy(t,rate)

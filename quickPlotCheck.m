@@ -1,6 +1,21 @@
 function [tally,mislabelIndex] = quickPlotCheck(bandStart,bandEnd,rate,t,...
     avg,crit1,crit2)
 
+% Author: Ryan Hughes
+% Purpose: Plot identified bands for user to confirm or flag as false
+%          positives
+% Input:
+%       bandStart: array of precipitation band start indices
+%       bandEnd: array of precipitation band end indices
+%       rate:
+%       t:
+%       avg:
+%       crit1:
+%       crit2:
+% Output:
+%       tally: total number of bands identified after user check
+%       mislabelIndex: indices of flagged false positives
+
 if length(bandStart) ~= length(bandEnd)
     error("Mismatching band endpoints!");
 end

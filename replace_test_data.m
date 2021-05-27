@@ -1,3 +1,9 @@
+% Author: Ryan Hughes
+% Purpose: Re-test pre-existing neural network model with different test data 
+% Input:
+%       testDaysNew: array of numerical days (of the year 2005) to test
+% Output:
+%       overall_acc: average accuracy across all tested days
 %% Housekeeping
 clear; close all; clc
 

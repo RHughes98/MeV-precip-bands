@@ -4,7 +4,9 @@
 % Inputs: 
 %     crit_vec - logical 1xn array depicting whether or not criteria is met
 %     min_percent - lower threshold of % True values to return 'passed'
-
+% Output:
+%       out: logical value indicating whether or not the minimum percentage
+%            has been met
 function [passed] = percentCheck(crit_vec,min_percent)
 
 % standardize format of min_percent

@@ -1,8 +1,15 @@
+% Author: Ryan Hughes
+% Purpose: Determine whether a certain percentage of criteria have been met
+%          in a logical vector
+% Input:
+%       crit: logical array of criteria values (whether or not the crit is met)
+%       window: moving time window of observation [s]
+%       min_percent: lower threshold of % True values to fill an index w/ 1 (T)
+% Output:
+%       out: logical value indicating whether or not the minimum percentage
+%            has been met
 function [out] = movPercent(crit, window, min_percent)
-% INPUT:
-%   crit: logical array of criteria values (whether or not the crit is met)
-%   window: moving time window of observation [s]
-%   min_percent: lower threshold of % True values to fill an index w/ 1 (T)
+
 
 % standardize format of min_percent
 if min_percent > 100 || min_percent < 0

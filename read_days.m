@@ -1,3 +1,13 @@
+% Author: Ryan Hughes
+% Purpose: Read data from a given day of 2005 into 
+% Input:
+%       days: array of days to analyze
+% Output:
+%       dailyData: cell array of telemetry data to use as features in NN
+% 
+% Note: Days from a year other than 2005 can be modified by removing '2005'
+%       from the filenames and tacking the year onto the beginning of the 
+%       'days' input (e.g. 2005347 for year 2005, day 347)
 function [dailyData,dailyData_unsorted] = read_days(days)
 
 for i = 1:length(days)

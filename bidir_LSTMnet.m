@@ -1,6 +1,12 @@
 %% Bidirectional LSTM Neural Network
-%           (Long Short Term Memory)
-
+% Author: Ryan Hughes
+% Purpose: Train and test a bidirectional Long Short-Term Memory (LSTM)
+%          neural network model to identify precipitation bands
+% Input:
+%       trainDays: array of numerical days (of the year 2005) to train on
+%       testDays: array of numerical days (of the year 2005) to test
+% Output:
+%       overall_acc: average accuracy across all tested days
 %% Housekeeping
 clear; close all; clc
 

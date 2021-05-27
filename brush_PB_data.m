@@ -1,3 +1,11 @@
+% Author: Ryan Hughes
+% Purpose: Prompt user to highlight all bands for a given day (in half-hour
+%          increments), then save categorical data to .mat file
+% Input:
+%       day: numerical day in the year 2005 whose data will be observed
+% Output:
+%       labels: categorical vector of 1's and 0's corresponding to PB's
+%                and uneventful data, respectively (saved to a .mat)
 %% Housekeeping
 clear; close all; clc
 

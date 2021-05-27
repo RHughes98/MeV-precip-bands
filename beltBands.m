@@ -1,3 +1,15 @@
+% Author: Ryan Hughes
+% Purpose: Identify bands along Van Allen Belts using modified criteria
+% Input:
+%       crit1: logical array of first criteria
+%       crit2: logical array of second criteria
+%       rate: count rate data
+%       tMin: min. time window of a PB (must be at least this many sec)
+%       tMax: max. time window of a PB
+% Output:
+%       bandStart: array of precipitation band start indices
+%       bandEnd: array of precipitation band end indices
+
 function [bandStart, bandEnd] = beltBands(crit1,crit2,rate,...
     tMin,tMax)
 
