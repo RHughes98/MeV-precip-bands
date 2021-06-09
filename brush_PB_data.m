@@ -37,6 +37,7 @@ for i = 1:length(bins)-1
     
     % ask number of bands to account for
     numBands = input('How many bands are visible in this time window?\n');
+    % NOTE: if user hits 'Enter' here without entering a number, expects a band
     if numBands == 0
         bInd_all = [bInd_all zeros(1,length(h.XData))];
         close
@@ -75,7 +76,8 @@ for i = 1:length(bins)-1
             
             % handle brushed data
             bInd = logical(h.BrushData);
-            bInd_all = [bInd_all bInd];
+            
+            % increment total precip band count
             PBcount = PBcount + 1;
 
             this_t = t(bins(i):bins(i+1));
@@ -86,6 +88,8 @@ for i = 1:length(bins)-1
             tPB{PBcount} = tB;
             ratePB{PBcount} = rateB;
         end
+        % handle brushed data
+        bInd_all = [bInd_all bInd];
     end
     close
 end
