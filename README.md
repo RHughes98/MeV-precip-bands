@@ -10,13 +10,22 @@ Downloaded and parsed telemetry data collected by the SAMPEX satellite, grouped 
 ### MATLAB
 
 #### `dataProcessingScript.m`
-The central script of the program. It reads in, parses, and processes SAMPEX data before finding Van Allen belts, microbursts, and precipitation bands. All active helper functions are invoked from this script.
+The central data parsing and analysis script of the program. It reads in, parses, and processes SAMPEX data before finding Van Allen belts, microbursts, and precipitation bands. Most active helper functions are invoked from this script. Its most pertinent use is saving daily data into a format conducive to neural network training.
+
+#### `bidir_LSTMnet.m`
+The center of the machine learning portion of this project. Takes in as input `.mat` files containing train and test data, then trains and tests a neural network before reporting high-level results.
+
+#### `replace_test_data.m`
+Used to re-define test data and re-test an existing neural network model on new test days. Same output as `bidir_LSTMnet.m`.
 
 #### `plotFunc.m`
 Plotting helper function, takes in specific data vectors for plotting. Input parameters can be varied to plot features found via different methods and criteria. The parameter structure is mostly for convenient swapping between criteria to plot for observation.
 
 #### `quickPlotCheck.m`
 Used for plotting all identified precipitation bands in order for users to individually identify true and false positives.
+
+#### `brush_PB_data.m`
+Displays data in half-hour chunks for the user to manually highlight observed precipitation bands. The output is a logical time array representing presence of bands for the whole day, used as input for neural networks.
 
 #### `curveFitting.m`
 Applies a 2<sup>nd</sup> term Gaussian curve fit to Van Allen belts. They are plotted one-by-one with the curve fit overlaid. This function invokes the `beltBands.m` helper function to find precipitation bands that occurred as the satellite was passing through the Van Allen belts.
@@ -39,11 +48,20 @@ Handles user input, which is taken to check whether a certain precipitation band
 #### `read_days.m`
 Takes as input an array of numerical days of the year 2005, then sorts feature data for those day into a cell array.   
 
+#### `var_checker.m`
+Takes day numbers as input, then calculates and displays the variance of each day's data set.
+
 #### `band_dummy.m`
 **Inactive** - used to test reliability of an updated precipitation band identification algorithm (using given criteria). 
 
 #### `combine_daily_data.m`
 **Inactive** - used in pre-processing to combine state and attitude data into a more agreeable format for analysis.
+
+#### `brush_test.m`
+**Inactive** - used in determin
+
+#### `neuralNetTraining.m`
+**Inactive** Trains and tests an autoencoder, currently doesn't work as intended but kept for posterity and possible future use.
 
 
 #### Data structs
