@@ -12,23 +12,25 @@ clear; close all; clc
 
 %% Read & sort data
 
+% read in feature data
 trainDays = [347 349];
 trainData = read_days(trainDays);
-
+% load and parse .mat data
 trainLabelsMat = load('trainLabels.mat');
 trainLabels = trainLabelsMat.labels;
+% convert to categorical but save double for later
 for i = 1:length(trainLabels)
     trainLabelDoubles(i) = trainLabels(i);
     trainLabels{i} = categorical(trainLabels{i}');
 end
 
+% read in feature data
 testDays = [345 348 353 365];
 testData = read_days(testDays);
-
+% load and parse .mat data
 testLabelsMat = load('testLabels.mat');
 testLabels = testLabelsMat.labelmat.labels;
-
-% testLabelDoubles = zeros(size(testLabels));
+% convert to categorical but save double for later
 for i = 1:length(testLabels)
     testLabelDoubles(i) = testLabels(i);
     testLabels{i} = categorical(testLabels{i}');
@@ -65,7 +67,7 @@ options = trainingOptions('adam', ...
 %% Train network
 
 net = trainNetwork(trainData',trainLabels,layers,options);
-% net = trainNetwork(a,b,layers,options);
+
 %% Test network
 
 predict = classify(net, testData, ...
@@ -86,7 +88,7 @@ overall_acc = mean(acc);
 
 for i = 1:length(testData)
     rate = testData{1,i}(2,:);
-    band_rate = rate' .* testLabelDoubles{i,1};
+    band_rate = rate' .* testLabelDoubles{i,1}; % PB points to plot
     
     figure
     semilogy(testData{1,i}(1,:),rate)

@@ -54,9 +54,11 @@ for i = 1:length(bins)-1
     bInd_all = [bInd_all bInd];
     PBcount = PBcount + 1;    
     
+    % define current 'chunk' of data for observation
     this_t = t(bins(i):bins(i+1));
     this_rate = rate(bins(i):bins(i+1));
     
+    % save logical data
     tB = this_t(bInd);
     rateB = this_rate(bInd);
     tPB{PBcount} = tB;
