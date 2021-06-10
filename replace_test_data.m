@@ -8,14 +8,13 @@
 clear; close all; clc
 
 %% Read & sort data
-
+% read in feature data
 testDaysNew = [345 348 353 365];
 testDataNew = read_days(testDaysNew);
-
+% read and parse .mat data
 retestLabelsMat = load('retestLabels.mat');
 retestLabels = retestLabelsMat.labelmat.labels;
-
-% retestLabelDoubles = zeros(size(retestLabels));
+% convert to categorical but save double for later
 for i = 1:length(retestLabels)
     retestLabelDoubles(i) = retestLabels(i);
     if size(retestLabels{i},2) > 1
