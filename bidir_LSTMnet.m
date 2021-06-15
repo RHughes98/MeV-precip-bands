@@ -29,7 +29,7 @@ testDays = [345 348 353 365];
 testData = read_days(testDays);
 % load and parse .mat data
 testLabelsMat = load('testLabels.mat');
-testLabels = testLabelsMat.labelmat.labels;
+testLabels = testLabelsMat.labels;
 % convert to categorical but save double for later
 for i = 1:length(testLabels)
     testLabelDoubles(i) = testLabels(i);

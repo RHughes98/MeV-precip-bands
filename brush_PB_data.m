@@ -10,18 +10,18 @@
 clear; close all; clc
 
 %% Read & split data
-day = 347;
+day = 365;
 data = read_days(day);
 
 t = data{1,1}(1,:);
 rate = data{1,1}(2,:);
 
 n = length(rate);
-bins = floor(linspace(1,n,49)); %half-hour increments
+bins = floor(linspace(0,n,49)); %half-hour increments
 
 %% Plot & brush data
 
-tPB = {};
+tPB = [];
 ratePB = {};
 PBcount = 0;
 bInd_all = [];
@@ -29,7 +29,7 @@ bInd_all = [];
 for i = 1:length(bins)-1
     % plot count rate of relevant section
     figure
-    h = semilogy(t(bins(i):bins(i+1)),rate(bins(i):bins(i+1)));
+    h = semilogy(t(bins(i)+1:bins(i+1)),rate(bins(i)+1:bins(i+1)));
     hold on
     title('Count Rate Time Window')
     xlabel('Time [h]')
@@ -55,13 +55,14 @@ for i = 1:length(bins)-1
     PBcount = PBcount + 1;    
     
     % define current 'chunk' of data for observation
-    this_t = t(bins(i):bins(i+1));
-    this_rate = rate(bins(i):bins(i+1));
+    this_t = t(bins(i)+1:bins(i+1));
+    this_rate = rate(bins(i)+1:bins(i+1));
     
     % save logical data
     tB = this_t(bInd);
     rateB = this_rate(bInd);
-    tPB{PBcount} = tB;
+    % tPB{PBcount} = tB;
+    tPB = [tPB tB];
     ratePB{PBcount} = rateB;
     
     % get user brush input for subsequent bands
@@ -82,18 +83,26 @@ for i = 1:length(bins)-1
             % increment total precip band count
             PBcount = PBcount + 1;
 
-            this_t = t(bins(i):bins(i+1));
-            this_rate = rate(bins(i):bins(i+1));
+            this_t = t(bins(i)+1:bins(i+1));
+            this_rate = rate(bins(i)+1:bins(i+1));
 
             tB = this_t(bInd);
             rateB = this_rate(bInd);
-            tPB{PBcount} = tB;
+            % tPB{PBcount} = tB;
+            tPB = [tPB tB];
             ratePB{PBcount} = rateB;
         end
         % handle brushed data
         bInd_all = [bInd_all bInd];
     end
     close
+end
+
+% match time stamps
+bInd_all = ismember(t,tPB);
+
+if length(bInd_all) ~= n
+    error('Brush data is of unexpected length != n')
 end
 
 %% Save data

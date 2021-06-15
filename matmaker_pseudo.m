@@ -4,4 +4,4 @@
 % labels = labelmat.labels, or labels {N x 1} cell variable
 % save trainLabels labels
 
-% trainLabels = load('trainLabels.mat');labelmat
+% trainLabels = load('trainLabels.mat');
