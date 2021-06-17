@@ -100,13 +100,18 @@ end
 
 % match time stamps
 bInd_all = ismember(t,tPB);
-
+% throw error if wrong length
 if length(bInd_all) ~= n
     error('Brush data is of unexpected length != n')
 end
 
 %% Save data
+% if .mat doesn't already exist:
 % brushLabels = matfile('brushLabels.mat');
+% labels{1} = categorical(bInd_all);
+% save brushLabels labels
+
+% else:
 brushLabels = load('brushLabels.mat');
 labels = brushLabels.labels;
 labels{length(labels)+1 } = categorical(bInd_all);

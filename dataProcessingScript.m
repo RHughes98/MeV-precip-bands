@@ -301,7 +301,6 @@ PB2.stdCrit1 = PB2.avgShort > PB2.avg + .5*PB2.std3;
 % [PB2.lowStart, PB2.lowEnd, ~] = PBands(PB2.stdCrit1,PB2.avgCrit2,PB2.rateShort,1.5,3);
 % [PB2.midStart, PB2.midEnd, ~] = PBands(PB2.stdCrit1,PB2.avgCrit2,PB2.rateShort,3,5);
 %}
-
 %% Precipitation bands - current
 
 % time windows for moving avg.
@@ -335,10 +334,9 @@ PB.critCC = PB.movCC < .85;
 % [PB.bandStart, PB.bandEnd] = PBands(PB.critAvg,PB.critCC,rate.rate,5,[]);
 [PB.bandStart, PB.bandEnd] = mergedCritBands(PB.critAvg,PB.critCC,rate.rate,4,[]);
 
-%% Self-check
-
 % stop timer before manual check
 toc
+%% Self-check
 
 % adjusted avg for selfCheckTally function
 % PB2.tallyAvg = [zeros(PB2.window/2,1); PB2.avg];
@@ -382,7 +380,7 @@ plotFunc(rate.t,rate.rate,rate.t,rate.rate,PB.bandStart,...
 %     PB2.stdBandEnd,PB2.avgShort,PB2.stdCrit1,PB2.avgCrit2,MB,PB2);
 
 %% Save relevant data
-
+% may require some 'hand-holding' in .mat saving process
 % save band indices to logical double for use as labels in neural net
 labels = zeros(size(rate.rate));
 for i = 1:length(PB.bandStart)
