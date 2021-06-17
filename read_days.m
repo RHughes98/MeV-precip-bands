@@ -1,5 +1,5 @@
 % Author: Ryan Hughes
-% Purpose: Read data from a given day of 2005 into 
+% Purpose: Read data from a given day of 2005 into a cell array of doubles
 % Input:
 %       days: array of days to analyze
 % Output:
@@ -78,7 +78,7 @@ for i = 1:length(days)
     dailyData_unsorted{i} = [rate.t{1,i}.'; rate.rate{1,i}.'; att.long{1,i}.';...
         att.lat{1,i}.'; att.inv_lat{1,i}.'; att.alt{1,i}.'; att.Lshell{1,i}.';...
         att.Bmag{1,i}.'; att.LC1{1,i}.'; att.LC2{1,i}.'; att.eqB{1,i}.';...
-        att.N100B{1,i}.'; att.S100B{1,i}.'; att.roundedSAA{1,i}.'];
+        att.N100B{1,i}.'; att.S100B{1,i}.'; att.roundedSAA{1,i}.'].';
 end
 
 % sort data for padding
@@ -91,7 +91,6 @@ end
 
 [~, iSorted] = sort(sequenceLengths);
 dailyData = dailyData_unsorted(iSorted);
-
 
 
 end

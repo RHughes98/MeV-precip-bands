@@ -38,7 +38,7 @@ end
 
 %% Learning Parameters
 
-inputSize = size(trainData{1,1},1);
+inputSize = size(trainData{1,1},2);
 numHiddenUnits = 100;
 numDays = length(trainDays);
 

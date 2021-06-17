@@ -7,11 +7,11 @@ function [tally,mislabelIndex] = quickPlotCheck(bandStart,bandEnd,rate,t,...
 % Input:
 %       bandStart: array of precipitation band start indices
 %       bandEnd: array of precipitation band end indices
-%       rate:
-%       t:
-%       avg:
-%       crit1:
-%       crit2:
+%       rate: count rate data per 100ms
+%       t: time in hours
+%       avg: rolling average of count rate 
+%       crit1: logical array indicating where crit1 is met
+%       crit2: logical array indicating where crit2 is met
 % Output:
 %       tally: total number of bands identified after user check
 %       mislabelIndex: indices of flagged false positives

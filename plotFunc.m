@@ -4,9 +4,16 @@ function [] = plotFunc(t,rate,tShort,rateShort,bandStart,bandEnd,...
 % Author: Ryan Hughes
 % Purpose: General plotting function for DataProcessingScript.m
 % Input:
+%       t & tShort: time series data (and shortened)
+%       rate & rateShort: count rate data (and shortened)
+%       bandStart: start indices of identified precipitation bands
+%       bandEnd: end indices of identified precipitation bands
+%       avgShort: short-window average of count rate
+%       crit1 & crit2: logical arrays depicting where crits are met
+%       MB: data struct with all pertinent microburst variables
 %       
 % Output:
-%       
+%       Plots
 
 % rate vs. time
 figure
