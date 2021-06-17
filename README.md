@@ -10,7 +10,7 @@ Downloaded and parsed telemetry data collected by the SAMPEX satellite, grouped 
 ### MATLAB
 
 #### `dataProcessingScript.m`
-The central data parsing and analysis script of the program. It reads in, parses, and processes SAMPEX data before finding Van Allen belts, microbursts, and precipitation bands. Most active helper functions are invoked from this script. Its most pertinent use is saving daily data into a format conducive to neural network training.
+The central data parsing and analysis script of the program. It reads in, parses, and processes SAMPEX data before finding Van Allen belts, microbursts, and precipitation bands. Most active helper functions are invoked from this script. Its most pertinent use is saving daily data into a format conducive to neural network training. Numerous approaches to precipiation band criteria are employed here, and this can be seen at times where there are 3 repetitions of seemingly the same line of code - commented with the style of criteria: original, average-based, and standard deviation-based. The user should leave at most one of these 3 lines uncommented at any time and ensure consistency wherever these lines occur (don't mix criteria types!).
 
 #### `bidir_LSTMnet.m`
 The center of the machine learning portion of this project. Takes in as input `.mat` files containing train and test data, then trains and tests a neural network before reporting high-level results.
@@ -187,7 +187,12 @@ This project is far from complete, and whoever takes it up next has their work m
 * Automate the process of reading SAMPEX data and organizing it into `.mat` files for neural network training and testing
 * Use `.fig` files in `PB-plots` subdirectory to compare various trials between models (plot new model's identified PB's over existing figure)
 * Feature reduction to create a more concise model
+* For an unidentified reason MATLAB's `trainNetwork` function doesn't like the current configuration of responses to the training model. Fixing this error should (hopefully) enable the model to run on brushed data (currently contained in the appropriate `.mat` files, but feel free to re-brush) without further changes. See the relevant section of [MATLAB's `trainNetwork` documentation](https://www.mathworks.com/help/deeplearning/ref/trainnetwork.html#mw_d0b3a2e4-09a0-42f9-a273-2bb25956fe66) for more info.
 * Run neural network models on a more powerful CPU than Ryan's personal laptop, using significantly more data
 * Compare the effects of modifying the interpretation of what 'defines' a precipitation band (e.g. active time, magnitude)
 * Plot user-brushed bands from `brush_PB_data.m` over bands determined from criteria, do the same with ML model results based on each
 * Employ random dropout of neural network nodes to ensure that model isn't overfitting
+
+## Getting Started
+
+To orient themself with the project, the next developer would be advised to begin with `dataProcessingScript.m`. As most helper functions are called from this script, some crafty debugging can yield examples of input and output parameters. When doing this, it's advised that the user comments out the `Self-Check` section of the script (somewhere around line 340) so as to skip the manual check of precipitation bands. Later, of course, this could be un-commented for further inspection of band criteria. Good luck!
