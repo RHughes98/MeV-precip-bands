@@ -172,7 +172,14 @@ Term | Definition
 
 Various machine learning techniques were explored to identify and/or predict precipitation bands. The most successful in Ryan's time here was a bidirectional Long Short Term Memory (LSTM) neural network with 100 hidden units. Variations of this model (by number of epochs) can be found in the `models` subdirectory.
 
-## Suggested Use
+#### Machine Learning Resources
+
+Listed below are some articles, publications, and other resources Ryan referred to during his time at LASP. Consider using any of these resources as a starting point or additional research for relevant machine learning techniques:
+* [Recurrent Neural Networks for Time Series Forecasting](https://export.arxiv.org/pdf/1901.00069)
+* [Anomaly Detection with LSTM in Keras](https://towardsdatascience.com/anomaly-detection-with-lstm-in-keras-8d8d7e50ab1b)
+* [Multi-Sensor Data Analysis Demo](https://github.com/ajayarunachalam/msda/blob/main/demo.ipynb)
+* [Satellite Telemetry Anomaly Detection](https://github.com/sapols/satellite-telemetry-anomaly-detection)
+* [ARIMA fundamentals](https://www.machinelearningplus.com/arima-model-time-series-forecasting-python/) and [ARIMA Parameters Guide](https://people.duke.edu/~rnau/arimrule.htm)
 
 ## Future Work
 
@@ -181,3 +188,6 @@ This project is far from complete, and whoever takes it up next has their work m
 * Use `.fig` files in `PB-plots` subdirectory to compare various trials between models (plot new model's identified PB's over existing figure)
 * Feature reduction to create a more concise model
 * Run neural network models on a more powerful CPU than Ryan's personal laptop, using significantly more data
+* Compare the effects of modifying the interpretation of what 'defines' a precipitation band (e.g. active time, magnitude)
+* Plot user-brushed bands from `brush_PB_data.m` over bands determined from criteria, do the same with ML model results based on each
+* Employ random dropout of neural network nodes to ensure that model isn't overfitting
